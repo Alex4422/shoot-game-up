@@ -12,6 +12,7 @@ import tools.Sound;
 import java.util.ArrayList;
 
 import metier.Hero;
+import metier.Map;
 
 public interface WriteService {
 	public void setHeroesPosition(Position p);
@@ -21,4 +22,6 @@ public interface WriteService {
 	public void setPhantoms(ArrayList<PhantomService> phantoms);
 	public void setSoundEffect(Sound.SOUND s);
 	public void addScore(int score);
+	public void setShoot(boolean shoot);
+	public void setMap(Map map);
 }

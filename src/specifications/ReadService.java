@@ -10,7 +10,9 @@ import tools.Position;
 import tools.Sound;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import metier.Map;
 import metier.Starship;
 
 public interface ReadService {
@@ -22,6 +24,9 @@ public interface ReadService {
 	public double getPhantomHeight();
 	public int getStepNumber();
 	public int getScore();
+	public Map getMap();
+	public boolean getShoot();
 	public ArrayList<PhantomService> getPhantoms();
 	public Sound.SOUND getSoundEffect();
+	public List<Position> getListShoot();
 }

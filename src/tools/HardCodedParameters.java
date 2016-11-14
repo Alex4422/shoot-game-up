@@ -14,7 +14,7 @@ public class HardCodedParameters {
                           phantomWidth = 30, phantomHeight = 30, phantomStep = 10;
   public static final int enginePaceMillis = 100,
                           spriteSlowDownRate = 7;
-  public static final double friction = 0.50;
+  public static final double friction = 0.5;
   public static final double resolutionShrinkFactor = 0.95,
                              userBarShrinkFactor = 0.25,
                              menuBarShrinkFactor = 0.5,

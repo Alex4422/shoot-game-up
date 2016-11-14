@@ -15,6 +15,7 @@ import specifications.EngineService;
 import specifications.BonusService;
 import specifications.DataService;
 import specifications.RequireDataService;
+import specifications.ViewerService;
 import specifications.PhantomService;
 
 import java.util.Timer;
@@ -30,7 +31,7 @@ public class Engine implements EngineService, RequireDataService{
 	private DataService data;
 	private User.COMMAND command;
 	private Random gen;
-	private boolean moveLeft,moveRight,moveUp,moveDown;
+	private boolean moveLeft,moveRight,moveUp,moveDown,shoot;
 	private double heroesVX,heroesVY;
 
 	public Engine(){}
@@ -49,6 +50,7 @@ public class Engine implements EngineService, RequireDataService{
 		moveRight = false;
 		moveUp = false;
 		moveDown = false;
+		shoot = false;
 		heroesVX = 0;
 		heroesVY = 0;
 	}
@@ -65,6 +67,12 @@ public class Engine implements EngineService, RequireDataService{
 				updateCommandHeroes();
 				updatePositionHeroes();
 
+				if (shoot){
+		        	System.out.println("shoot");
+		        	data.getListShoot().add(new Position(data.getHero().getPosition().x,data.getHero().getPosition().y));
+		        	shoot=false;
+		        }
+				
 				ArrayList<PhantomService> phantoms = new ArrayList<PhantomService>();
 				int score=0;
 
@@ -104,6 +112,7 @@ public class Engine implements EngineService, RequireDataService{
 		if (c==User.COMMAND.RIGHT) moveRight=true;
 		if (c==User.COMMAND.UP) moveUp=true;
 		if (c==User.COMMAND.DOWN) moveDown=true;
+		if (c==User.COMMAND.SHOOT) shoot=true;
 	}
 
 	@Override
@@ -112,6 +121,7 @@ public class Engine implements EngineService, RequireDataService{
 		if (c==User.COMMAND.RIGHT) moveRight=false;
 		if (c==User.COMMAND.UP) moveUp=false;
 		if (c==User.COMMAND.DOWN) moveDown=false;
+		if (c==User.COMMAND.SHOOT) shoot=true;
 	}
 
 	private void updateSpeedHeroes(){
@@ -124,6 +134,7 @@ public class Engine implements EngineService, RequireDataService{
 		if (moveRight) heroesVX+=heroesStep;
 		if (moveUp) heroesVY-=heroesStep;
 		if (moveDown) heroesVY+=heroesStep;
+		if(shoot) data.setShoot(true);
 	}
 
 	private void updatePositionHeroes(){

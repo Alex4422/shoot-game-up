@@ -16,9 +16,11 @@ import specifications.PhantomService;
 import data.ia.MoveLeftPhantom;
 import javafx.scene.image.Image;
 import metier.Hero;
+import metier.Map;
 import metier.Starship;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Data implements DataService{
   //private Heroes hercules;
@@ -28,7 +30,10 @@ public class Data implements DataService{
   private double heroesWidth,heroesHeight,phantomWidth,phantomHeight;
   private Sound.SOUND sound;
   private Starship hero;
-
+  private Map map;
+  private ArrayList<Position> listShoot;
+  private boolean shoot;
+  
   public Data(){}
 
   @Override
@@ -43,13 +48,13 @@ public class Data implements DataService{
     phantomWidth = HardCodedParameters.phantomWidth;
     phantomHeight = HardCodedParameters.phantomHeight;
     sound = Sound.SOUND.None;
-    
+    map = new Map();
     
     //*********** STARSHIP ****************
     hero = new Hero();
     hero.setPosition(new Position(HardCodedParameters.heroesStartX,HardCodedParameters.heroesStartY));
     hero.setImage(new Image("file:src/images/spaceship-hero.png"));
-    
+    listShoot=new ArrayList<Position>();
     
   }
 
@@ -109,4 +114,20 @@ public void setHero(Hero hero) {
 	// TODO Auto-generated method stub
 	
 }
+
+@Override
+public boolean getShoot() {return this.shoot;}
+
+@Override
+public void setShoot(boolean shoot) {this.shoot = shoot;}
+
+@Override
+public Map getMap() {return this.map;}
+
+@Override
+public void setMap(Map map) {this.map = map;}
+
+@Override
+public List<Position> getListShoot() {return this.listShoot;}
+
 }
