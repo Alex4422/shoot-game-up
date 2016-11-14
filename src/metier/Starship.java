@@ -2,6 +2,7 @@ package metier;
 
 import algorithm.SimpleShot;
 import specifications.BonusService;
+import specifications.HealthService;
 import specifications.ShotService;
 import specifications.StarshipService;
 
@@ -17,6 +18,7 @@ public abstract class Starship implements StarshipService {
 	private short shotStrength;
 	private short shotIndex = 0;
 	protected BonusService bonusService;
+	protected HealthService healthService;
 	protected ShotService shotService = new SimpleShot();
 	
 	//Constructeur par defaut
@@ -160,6 +162,20 @@ public abstract class Starship implements StarshipService {
 	 */
 	public void setBonusService(BonusService bonusService) {
 		this.bonusService = bonusService;
+	}
+
+	/**
+	 * @return the healthService
+	 */
+	public HealthService getHealthService() {
+		return healthService;
+	}
+
+	/**
+	 * @param healthService the healthService to set
+	 */
+	public void setHealthService(HealthService healthService) {
+		this.healthService = healthService;
 	}
 
 	/**
