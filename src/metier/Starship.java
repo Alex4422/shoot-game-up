@@ -15,6 +15,7 @@ public abstract class Starship implements StarshipService {
 	private String starshipSkinModel;
 	private short shotSpeedRate;
 	private short shotStrength;
+	private short shotIndex = 0;
 	protected BonusService bonusService;
 	protected ShotService shotService = new SimpleShot();
 	
@@ -173,6 +174,14 @@ public abstract class Starship implements StarshipService {
 	 */
 	public void setShotService(ShotService shotService) {
 		this.shotService = shotService;
+	}
+
+	public short getShotIndex() {
+		return shotIndex;
+	}
+
+	public void setShotIndex(short shotIndex) {
+		this.shotIndex = shotIndex;
 	}
 
 	@Override

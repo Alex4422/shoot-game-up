@@ -12,6 +12,7 @@ import tools.Position;
 import tools.Sound;
 
 import specifications.EngineService;
+import specifications.BonusService;
 import specifications.DataService;
 import specifications.RequireDataService;
 import specifications.PhantomService;
@@ -171,5 +172,9 @@ public class Engine implements EngineService, RequireDataService{
   
   private boolean collisionHeroesPhantoms(){
     for (PhantomService p:data.getPhantoms()) if (collisionHeroesPhantom(p)) return true; return false;
+  }
+  
+  private <T> T generateRandomBonus() {
+	return null;
   }
 }
