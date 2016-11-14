@@ -20,6 +20,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import metier.Map;
 import javafx.scene.text.Font;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -34,10 +35,10 @@ public class Viewer implements ViewerService, RequireReadService{
   private ReadService data;
   private ImageView heroesAvatar;
   private Image heroesSpriteSheet;
-  private ArrayList<Rectangle2D> heroesAvatarViewports;
-  private ArrayList<Integer> heroesAvatarXModifiers;
-  private ArrayList<Integer> heroesAvatarYModifiers;
-  private int heroesAvatarViewportIndex;
+//  private ArrayList<Rectangle2D> heroesAvatarViewports;
+//  private ArrayList<Integer> heroesAvatarXModifiers;
+//  private ArrayList<Integer> heroesAvatarYModifiers;
+//  private int heroesAvatarViewportIndex;
   private double xShrink,yShrink,shrink,xModifier,yModifier,heroesScale;
 
   public Viewer(){}
@@ -55,35 +56,36 @@ public class Viewer implements ViewerService, RequireReadService{
     yModifier=0;
 
     //Yucky hard-conding
-    heroesSpriteSheet = new Image("file:src/images/modern soldier large.png");
-    heroesAvatar = new ImageView(heroesSpriteSheet);
-    heroesAvatarViewports = new ArrayList<Rectangle2D>();
-    heroesAvatarXModifiers = new ArrayList<Integer>();
-    heroesAvatarYModifiers = new ArrayList<Integer>();
+//    heroesSpriteSheet = new Image("file:src/images/modern soldier large.png");
+    heroesAvatar = new ImageView(data.getHero().getImage());
+//    heroesAvatar = new ImageView(heroesSpriteSheet);
+//    heroesAvatarViewports = new ArrayList<Rectangle2D>();
+//    heroesAvatarXModifiers = new ArrayList<Integer>();
+//    heroesAvatarYModifiers = new ArrayList<Integer>();
 
-    heroesAvatarViewportIndex=0;
+//    heroesAvatarViewportIndex=0;
     
     //TODO: replace the following with XML loader
-    //heroesAvatarViewports.add(new Rectangle2D(301,386,95,192));
-    heroesAvatarViewports.add(new Rectangle2D(570,194,115,190));
-    heroesAvatarViewports.add(new Rectangle2D(398,386,133,192));
-    heroesAvatarViewports.add(new Rectangle2D(155,194,147,190));
-    heroesAvatarViewports.add(new Rectangle2D(785,386,127,194));
-    heroesAvatarViewports.add(new Rectangle2D(127,582,135,198));
-    heroesAvatarViewports.add(new Rectangle2D(264,582,111,200));
-    heroesAvatarViewports.add(new Rectangle2D(2,582,123,198));
-    heroesAvatarViewports.add(new Rectangle2D(533,386,115,192));
-    //heroesAvatarViewports.add(new Rectangle2D(204,386,95,192));
-
-    //heroesAvatarXModifiers.add(10);heroesAvatarYModifiers.add(-7);
-    heroesAvatarXModifiers.add(6);heroesAvatarYModifiers.add(-6);
-    heroesAvatarXModifiers.add(2);heroesAvatarYModifiers.add(-8);
-    heroesAvatarXModifiers.add(1);heroesAvatarYModifiers.add(-10);
-    heroesAvatarXModifiers.add(1);heroesAvatarYModifiers.add(-13);
-    heroesAvatarXModifiers.add(5);heroesAvatarYModifiers.add(-15);
-    heroesAvatarXModifiers.add(5);heroesAvatarYModifiers.add(-13);
-    heroesAvatarXModifiers.add(0);heroesAvatarYModifiers.add(-9);
-    heroesAvatarXModifiers.add(0);heroesAvatarYModifiers.add(-6);
+//    //heroesAvatarViewports.add(new Rectangle2D(301,386,95,192));
+//    heroesAvatarViewports.add(new Rectangle2D(570,194,115,190));
+//    heroesAvatarViewports.add(new Rectangle2D(398,386,133,192));
+//    heroesAvatarViewports.add(new Rectangle2D(155,194,147,190));
+//    heroesAvatarViewports.add(new Rectangle2D(785,386,127,194));
+//    heroesAvatarViewports.add(new Rectangle2D(127,582,135,198));
+//    heroesAvatarViewports.add(new Rectangle2D(264,582,111,200));
+//    heroesAvatarViewports.add(new Rectangle2D(2,582,123,198));
+//    heroesAvatarViewports.add(new Rectangle2D(533,386,115,192));
+//    //heroesAvatarViewports.add(new Rectangle2D(204,386,95,192));
+//
+//    //heroesAvatarXModifiers.add(10);heroesAvatarYModifiers.add(-7);
+//    heroesAvatarXModifiers.add(6);heroesAvatarYModifiers.add(-6);
+//    heroesAvatarXModifiers.add(2);heroesAvatarYModifiers.add(-8);
+//    heroesAvatarXModifiers.add(1);heroesAvatarYModifiers.add(-10);
+//    heroesAvatarXModifiers.add(1);heroesAvatarYModifiers.add(-13);
+//    heroesAvatarXModifiers.add(5);heroesAvatarYModifiers.add(-15);
+//    heroesAvatarXModifiers.add(5);heroesAvatarYModifiers.add(-13);
+//    heroesAvatarXModifiers.add(0);heroesAvatarYModifiers.add(-9);
+//    heroesAvatarXModifiers.add(0);heroesAvatarYModifiers.add(-6);
     //heroesAvatarXModifiers.add(10);heroesAvatarYModifiers.add(-7);
     
   }
@@ -95,15 +97,7 @@ public class Viewer implements ViewerService, RequireReadService{
     yModifier=.01*shrink*defaultMainHeight;
 
     //Yucky hard-conding
-    Rectangle map = new Rectangle(-2*xModifier+shrink*defaultMainWidth,
-                                  -.2*shrink*defaultMainHeight+shrink*defaultMainHeight);
-    map.setFill(Color.WHITE);
-    map.setStroke(Color.DIMGRAY);
-    map.setStrokeWidth(.01*shrink*defaultMainHeight);
-    map.setArcWidth(.04*shrink*defaultMainHeight);
-    map.setArcHeight(.04*shrink*defaultMainHeight);
-    map.setTranslateX(xModifier);
-    map.setTranslateY(yModifier);
+    Rectangle map = new Map(xModifier, yModifier, -2*xModifier+shrink*defaultMainWidth, -.2*shrink*defaultMainHeight+shrink*defaultMainHeight).draw();
     
     Text greets = new Text(-0.1*shrink*defaultMainHeight+.5*shrink*defaultMainWidth,
                            -0.1*shrink*defaultMainWidth+shrink*defaultMainHeight,
@@ -115,22 +109,22 @@ public class Viewer implements ViewerService, RequireReadService{
                            "Score: "+data.getScore());
     score.setFont(new Font(.05*shrink*defaultMainHeight));
     
-    int index=heroesAvatarViewportIndex/spriteSlowDownRate;
-    heroesScale=data.getHeroesHeight()*shrink/heroesAvatarViewports.get(index).getHeight();
-    heroesAvatar.setViewport(heroesAvatarViewports.get(index));
+//    int index=heroesAvatarViewportIndex/spriteSlowDownRate;
+//    heroesScale=data.getHero().getSizeY()*shrink/heroesAvatarViewports.getHeight();
+//    heroesAvatar.setViewport(heroesAvatarViewports.get(index));
     heroesAvatar.setFitHeight(data.getHeroesHeight()*shrink);
     heroesAvatar.setPreserveRatio(true);
     heroesAvatar.setTranslateX(shrink*data.getHeroesPosition().x+
                                shrink*xModifier+
-                               -heroesScale*0.5*heroesAvatarViewports.get(index).getWidth()+
-                               shrink*heroesScale*heroesAvatarXModifiers.get(index)
+                               -heroesScale*0.5*data.getHero().getSizeX()
                               );
     heroesAvatar.setTranslateY(shrink*data.getHeroesPosition().y+
                                shrink*yModifier+
-                               -heroesScale*0.5*heroesAvatarViewports.get(index).getHeight()+
-                               shrink*heroesScale*heroesAvatarYModifiers.get(index)
+                               -heroesScale*0.5*data.getHero().getSizeY()
                               );
-    heroesAvatarViewportIndex=(heroesAvatarViewportIndex+1)%(heroesAvatarViewports.size()*spriteSlowDownRate);
+//    heroesAvatarViewportIndex=(heroesAvatarViewportIndex+1)%(heroesAvatarViewports.size()*spriteSlowDownRate);
+    
+    
 
     Group panel = new Group();
     panel.getChildren().addAll(map,greets,score,heroesAvatar);

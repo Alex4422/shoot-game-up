@@ -14,6 +14,9 @@ import specifications.DataService;
 import specifications.PhantomService;
 
 import data.ia.MoveLeftPhantom;
+import javafx.scene.image.Image;
+import metier.Hero;
+import metier.Starship;
 
 import java.util.ArrayList;
 
@@ -24,6 +27,7 @@ public class Data implements DataService{
   private ArrayList<PhantomService> phantoms;
   private double heroesWidth,heroesHeight,phantomWidth,phantomHeight;
   private Sound.SOUND sound;
+  private Starship hero;
 
   public Data(){}
 
@@ -39,6 +43,14 @@ public class Data implements DataService{
     phantomWidth = HardCodedParameters.phantomWidth;
     phantomHeight = HardCodedParameters.phantomHeight;
     sound = Sound.SOUND.None;
+    
+    
+    //*********** STARSHIP ****************
+    hero = new Hero();
+    hero.setPosition(new Position(HardCodedParameters.heroesStartX,HardCodedParameters.heroesStartY));
+    hero.setImage(new Image("file:src/images/spaceship-hero.png"));
+    
+    
   }
 
   @Override
@@ -85,4 +97,16 @@ public class Data implements DataService{
   
   @Override
   public void setSoundEffect(Sound.SOUND s) { sound=s; }
+
+@Override
+public Starship getHero() {
+	// TODO Auto-generated method stub
+	return this.hero;
+}
+
+@Override
+public void setHero(Hero hero) {
+	// TODO Auto-generated method stub
+	
+}
 }

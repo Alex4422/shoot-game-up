@@ -1,22 +1,26 @@
 package metier;
 
 import algorithm.SimpleShot;
+import javafx.scene.image.Image;
 import specifications.BonusService;
 import specifications.HealthService;
 import specifications.ShotService;
 import specifications.StarshipService;
+import tools.Position;
 
 public abstract class Starship implements StarshipService {
-	private short sizeX;
-	private short sizeY;
+	private int sizeX;
+	private int sizeY;
 	private short speed;
 	private short life;
+	private Position position;
 	private short frontSensor;
 	private short sideSensor;
 	private String starshipSkinModel;
 	private short shotSpeedRate;
 	private short shotStrength;
 	private short shotIndex = 0;
+	private Image image;
 	protected BonusService bonusService;
 	protected HealthService healthService;
 	protected ShotService shotService = new SimpleShot();
@@ -24,31 +28,39 @@ public abstract class Starship implements StarshipService {
 	//Constructeur par defaut
 	public Starship(){}
 	
+	public Image getImage() {
+		return image;
+	}
+
+	public void setImage(Image image) {
+		this.image = image;
+	}
+
 	/**
 	 * @return the sizeX
 	 */
-	public short getSizeX() {
+	public int getSizeX() {
 		return sizeX;
 	}
 
 	/**
 	 * @param sizeX the sizeX to set
 	 */
-	public void setSizeX(short sizeX) {
+	public void setSizeX(int sizeX) {
 		this.sizeX = sizeX;
 	}
 
 	/**
 	 * @return the sizeY
 	 */
-	public short getSizeY() {
+	public int getSizeY() {
 		return sizeY;
 	}
 
 	/**
 	 * @param sizeY the sizeY to set
 	 */
-	public void setSizeY(short sizeY) {
+	public void setSizeY(int sizeY) {
 		this.sizeY = sizeY;
 	}
 
@@ -78,6 +90,18 @@ public abstract class Starship implements StarshipService {
 	 */
 	public void setLife(short life) {
 		this.life = life;
+	}
+
+
+	/**
+	 * @param positon the position to set
+	 */
+	public Position getPosition() {
+		return position;
+	}
+
+	public void setPosition(Position position) {
+		this.position = position;
 	}
 
 	/**

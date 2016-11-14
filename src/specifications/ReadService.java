@@ -11,14 +11,17 @@ import tools.Sound;
 
 import java.util.ArrayList;
 
+import metier.Starship;
+
 public interface ReadService {
-  public Position getHeroesPosition();
-  public double getHeroesWidth();
-  public double getHeroesHeight();
-  public double getPhantomWidth();
-  public double getPhantomHeight();
-  public int getStepNumber();
-  public int getScore();
-  public ArrayList<PhantomService> getPhantoms();
-  public Sound.SOUND getSoundEffect();
+	public Position getHeroesPosition();
+	public Starship getHero();
+	public double getHeroesWidth();
+	public double getHeroesHeight();
+	public double getPhantomWidth();
+	public double getPhantomHeight();
+	public int getStepNumber();
+	public int getScore();
+	public ArrayList<PhantomService> getPhantoms();
+	public Sound.SOUND getSoundEffect();
 }

@@ -23,158 +23,159 @@ import java.util.Random;
 import java.util.ArrayList;
 
 public class Engine implements EngineService, RequireDataService{
-  private static final double friction=HardCodedParameters.friction,
-                              heroesStep=HardCodedParameters.heroesStep,
-                              phantomStep=HardCodedParameters.phantomStep;
-  private Timer engineClock;
-  private DataService data;
-  private User.COMMAND command;
-  private Random gen;
-  private boolean moveLeft,moveRight,moveUp,moveDown;
-  private double heroesVX,heroesVY;
+	private static final double friction=HardCodedParameters.friction,
+			heroesStep=HardCodedParameters.heroesStep,
+			phantomStep=HardCodedParameters.phantomStep;
+	private Timer engineClock;
+	private DataService data;
+	private User.COMMAND command;
+	private Random gen;
+	private boolean moveLeft,moveRight,moveUp,moveDown;
+	private double heroesVX,heroesVY;
 
-  public Engine(){}
+	public Engine(){}
 
-  @Override
-  public void bindDataService(DataService service){
-    data=service;
-  }
-  
-  @Override
-  public void init(){
-    engineClock = new Timer();
-    command = User.COMMAND.NONE;
-    gen = new Random();
-    moveLeft = false;
-    moveRight = false;
-    moveUp = false;
-    moveDown = false;
-    heroesVX = 0;
-    heroesVY = 0;
-  }
+	@Override
+	public void bindDataService(DataService service){
+		data=service;
+	}
 
-  @Override
-  public void start(){
-    engineClock.schedule(new TimerTask(){
-      public void run() {
-        //System.out.println("Game step #"+data.getStepNumber()+": checked.");
-        
-        if (gen.nextInt(10)<3) spawnPhantom();
+	@Override
+	public void init(){
+		engineClock = new Timer();
+		command = User.COMMAND.NONE;
+		gen = new Random();
+		moveLeft = false;
+		moveRight = false;
+		moveUp = false;
+		moveDown = false;
+		heroesVX = 0;
+		heroesVY = 0;
+	}
 
-        updateSpeedHeroes();
-        updateCommandHeroes();
-        updatePositionHeroes();
+	@Override
+	public void start(){
+		engineClock.schedule(new TimerTask(){
+			public void run() {
+				//System.out.println("Game step #"+data.getStepNumber()+": checked.");
 
-        ArrayList<PhantomService> phantoms = new ArrayList<PhantomService>();
-        int score=0;
+				if (gen.nextInt(10)<3) spawnPhantom();
 
-        data.setSoundEffect(Sound.SOUND.None);
+				updateSpeedHeroes();
+				updateCommandHeroes();
+				updatePositionHeroes();
 
-        for (PhantomService p:data.getPhantoms()){
-          if (p.getAction()==PhantomService.MOVE.LEFT) moveLeft(p);
-          if (p.getAction()==PhantomService.MOVE.RIGHT) moveRight(p);
-          if (p.getAction()==PhantomService.MOVE.UP) moveUp(p);
-          if (p.getAction()==PhantomService.MOVE.DOWN) moveDown(p);
+				ArrayList<PhantomService> phantoms = new ArrayList<PhantomService>();
+				int score=0;
 
-          if (collisionHeroesPhantom(p)){
-            data.setSoundEffect(Sound.SOUND.HeroesGotHit);
-            score++;
-          } else {
-            if (p.getPosition().x>0) phantoms.add(p);
-          }
-        }
+				data.setSoundEffect(Sound.SOUND.None);
 
-        data.addScore(score);
+				for (PhantomService p:data.getPhantoms()){
+					if (p.getAction()==PhantomService.MOVE.LEFT) moveLeft(p);
+					if (p.getAction()==PhantomService.MOVE.RIGHT) moveRight(p);
+					if (p.getAction()==PhantomService.MOVE.UP) moveUp(p);
+					if (p.getAction()==PhantomService.MOVE.DOWN) moveDown(p);
 
-        data.setPhantoms(phantoms);
+					if (collisionHeroesPhantom(p)){
+						data.setSoundEffect(Sound.SOUND.HeroesGotHit);
+						score++;
+					} else {
+						if (p.getPosition().x>0) phantoms.add(p);
+					}
+				}
 
-        data.setStepNumber(data.getStepNumber()+1);
-      }
-    },0,HardCodedParameters.enginePaceMillis);
-  }
+				data.addScore(score);
 
-  @Override
-  public void stop(){
-    engineClock.cancel();
-  }
+				data.setPhantoms(phantoms);
 
-  @Override
-  public void setHeroesCommand(User.COMMAND c){
-    if (c==User.COMMAND.LEFT) moveLeft=true;
-    if (c==User.COMMAND.RIGHT) moveRight=true;
-    if (c==User.COMMAND.UP) moveUp=true;
-    if (c==User.COMMAND.DOWN) moveDown=true;
-  }
-  
-  @Override
-  public void releaseHeroesCommand(User.COMMAND c){
-    if (c==User.COMMAND.LEFT) moveLeft=false;
-    if (c==User.COMMAND.RIGHT) moveRight=false;
-    if (c==User.COMMAND.UP) moveUp=false;
-    if (c==User.COMMAND.DOWN) moveDown=false;
-  }
+				data.setStepNumber(data.getStepNumber()+1);
+			}
+		},0,HardCodedParameters.enginePaceMillis);
+	}
 
-  private void updateSpeedHeroes(){
-    heroesVX*=friction;
-    heroesVY*=friction;
-  }
+	@Override
+	public void stop(){
+		engineClock.cancel();
+	}
 
-  private void updateCommandHeroes(){
-    if (moveLeft) heroesVX-=heroesStep;
-    if (moveRight) heroesVX+=heroesStep;
-    if (moveUp) heroesVY-=heroesStep;
-    if (moveDown) heroesVY+=heroesStep;
-  }
-  
-  private void updatePositionHeroes(){
-    data.setHeroesPosition(new Position(data.getHeroesPosition().x+heroesVX,data.getHeroesPosition().y+heroesVY));
-    //if (data.getHeroesPosition().x<0) data.setHeroesPosition(new Position(0,data.getHeroesPosition().y));
-    //etc...
-  }
+	@Override
+	public void setHeroesCommand(User.COMMAND c){
+		if (c==User.COMMAND.LEFT) moveLeft=true;
+		if (c==User.COMMAND.RIGHT) moveRight=true;
+		if (c==User.COMMAND.UP) moveUp=true;
+		if (c==User.COMMAND.DOWN) moveDown=true;
+	}
 
-  private void spawnPhantom(){
-    int x=(int)(HardCodedParameters.defaultWidth*.9);
-    int y=0;
-    boolean cont=true;
-    while (cont) {
-      y=(int)(gen.nextInt((int)(HardCodedParameters.defaultHeight*.6))+HardCodedParameters.defaultHeight*.1);
-      cont=false;
-      for (PhantomService p:data.getPhantoms()){
-        if (p.getPosition().equals(new Position(x,y))) cont=true;
-      }
-    }
-    data.addPhantom(new Position(x,y));
-  }
+	@Override
+	public void releaseHeroesCommand(User.COMMAND c){
+		if (c==User.COMMAND.LEFT) moveLeft=false;
+		if (c==User.COMMAND.RIGHT) moveRight=false;
+		if (c==User.COMMAND.UP) moveUp=false;
+		if (c==User.COMMAND.DOWN) moveDown=false;
+	}
 
-  private void moveLeft(PhantomService p){
-    p.setPosition(new Position(p.getPosition().x-phantomStep,p.getPosition().y));
-  }
+	private void updateSpeedHeroes(){
+		heroesVX*=friction;
+		heroesVY*=friction;
+	}
 
-  private void moveRight(PhantomService p){
-    p.setPosition(new Position(p.getPosition().x+phantomStep,p.getPosition().y));
-  }
+	private void updateCommandHeroes(){
+		if (moveLeft) heroesVX-=heroesStep;
+		if (moveRight) heroesVX+=heroesStep;
+		if (moveUp) heroesVY-=heroesStep;
+		if (moveDown) heroesVY+=heroesStep;
+	}
 
-  private void moveUp(PhantomService p){
-    p.setPosition(new Position(p.getPosition().x,p.getPosition().y-phantomStep));
-  }
+	private void updatePositionHeroes(){
+//		data.setHeroesPosition(new Position(data.getHeroesPosition().x+heroesVX,data.getHeroesPosition().y+heroesVY));
+		data.getHero().setPosition(new Position(data.getHero().getPosition().x+heroesVX,data.getHero().getPosition().y+heroesVY));
+		//if (data.getHeroesPosition().x<0) data.setHeroesPosition(new Position(0,data.getHeroesPosition().y));
+		//etc...
+	}
 
-  private void moveDown(PhantomService p){
-    p.setPosition(new Position(p.getPosition().x,p.getPosition().y+phantomStep));
-  }
+	private void spawnPhantom(){
+		int x=(int)(HardCodedParameters.defaultWidth*.9);
+		int y=0;
+		boolean cont=true;
+		while (cont) {
+			y=(int)(gen.nextInt((int)(HardCodedParameters.defaultHeight*.6))+HardCodedParameters.defaultHeight*.1);
+			cont=false;
+			for (PhantomService p:data.getPhantoms()){
+				if (p.getPosition().equals(new Position(x,y))) cont=true;
+			}
+		}
+		data.addPhantom(new Position(x,y));
+	}
 
-  private boolean collisionHeroesPhantom(PhantomService p){
-    return (
-      (data.getHeroesPosition().x-p.getPosition().x)*(data.getHeroesPosition().x-p.getPosition().x)+
-      (data.getHeroesPosition().y-p.getPosition().y)*(data.getHeroesPosition().y-p.getPosition().y) <
-      0.25*(data.getHeroesWidth()+data.getPhantomWidth())*(data.getHeroesWidth()+data.getPhantomWidth())
-    );
-  }
-  
-  private boolean collisionHeroesPhantoms(){
-    for (PhantomService p:data.getPhantoms()) if (collisionHeroesPhantom(p)) return true; return false;
-  }
-  
-  private <T> T generateRandomBonus() {
-	return null;
-  }
+	private void moveLeft(PhantomService p){
+		p.setPosition(new Position(p.getPosition().x-phantomStep,p.getPosition().y));
+	}
+
+	private void moveRight(PhantomService p){
+		p.setPosition(new Position(p.getPosition().x+phantomStep,p.getPosition().y));
+	}
+
+	private void moveUp(PhantomService p){
+		p.setPosition(new Position(p.getPosition().x,p.getPosition().y-phantomStep));
+	}
+
+	private void moveDown(PhantomService p){
+		p.setPosition(new Position(p.getPosition().x,p.getPosition().y+phantomStep));
+	}
+
+	private boolean collisionHeroesPhantom(PhantomService p){
+		return (
+				(data.getHeroesPosition().x-p.getPosition().x)*(data.getHeroesPosition().x-p.getPosition().x)+
+				(data.getHeroesPosition().y-p.getPosition().y)*(data.getHeroesPosition().y-p.getPosition().y) <
+				0.25*(data.getHeroesWidth()+data.getPhantomWidth())*(data.getHeroesWidth()+data.getPhantomWidth())
+				);
+	}
+
+	private boolean collisionHeroesPhantoms(){
+		for (PhantomService p:data.getPhantoms()) if (collisionHeroesPhantom(p)) return true; return false;
+	}
+
+	private <T> T generateRandomBonus() {
+		return null;
+	}
 }

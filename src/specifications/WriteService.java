@@ -11,11 +11,14 @@ import tools.Sound;
 
 import java.util.ArrayList;
 
+import metier.Hero;
+
 public interface WriteService {
-  public void setHeroesPosition(Position p);
-  public void setStepNumber(int n);
-  public void addPhantom(Position p);
-  public void setPhantoms(ArrayList<PhantomService> phantoms);
-  public void setSoundEffect(Sound.SOUND s);
-  public void addScore(int score);
+	public void setHeroesPosition(Position p);
+	public void setHero(Hero hero);
+	public void setStepNumber(int n);
+	public void addPhantom(Position p);
+	public void setPhantoms(ArrayList<PhantomService> phantoms);
+	public void setSoundEffect(Sound.SOUND s);
+	public void addScore(int score);
 }

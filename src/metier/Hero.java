@@ -1,10 +1,15 @@
 package metier;
 
-public class Heroe extends Starship {
+import tools.HardCodedParameters;
+
+public class Hero extends Starship {
 	private Player player;
 	
-	public Heroe(){
+	public Hero(){
 		player = new Player();
+		
+		this.setSizeX(HardCodedParameters.heroesStartX);
+		this.setSizeY(HardCodedParameters.heroesStartY);
 	}
 
 	/**
