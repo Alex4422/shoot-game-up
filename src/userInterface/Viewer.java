@@ -30,9 +30,9 @@ public class Viewer implements ViewerService, RequireReadService{
 	private static final int spriteSlowDownRate=HardCodedParameters.spriteSlowDownRate;
 	private static final double locationMainScoreJoueurX=HardCodedParameters.locationScoreJoueurX,
 			locationMainScoreJoueurY=HardCodedParameters.locationScoreJoueurY,
-			defaultMainWidth=HardCodedParameters.defaultWidth,
-	private static final double locationMainGameLevelX=HardCodedParameters.locationGameLevelX, 
+			locationMainGameLevelX=HardCodedParameters.locationGameLevelX, 
 			locationMainGameLevelY=HardCodedParameters.locationGameLevelY,
+			defaultMainWidth=HardCodedParameters.defaultWidth,
 			defaultMainHeight=HardCodedParameters.defaultHeight;
 	private ReadService data;
 	private ImageView heroesAvatar;
