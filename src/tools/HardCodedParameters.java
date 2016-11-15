@@ -10,7 +10,8 @@ public class HardCodedParameters {
   //---HARD-CODED-PARAMETERS---//
   public static String defaultParamFileName = "in.parameters";
   public static final int defaultWidth = 800, defaultHeight = 600,
-                          heroesStartX = 400, heroesStartY = 450, heroesWidth=60, heroesHeight=50, heroesStep = 10,
+  						  locationScoreJoueurX = 20, locationScoreJoueurY = 90,
+  						  heroesStartX = 400, heroesStartY = 470, heroesWidth=60, heroesHeight=50, heroesStep = 10,
                           phantomWidth = 30, phantomHeight = 30, phantomStep = 10;
   public static final int enginePaceMillis = 100,
                           spriteSlowDownRate = 7;

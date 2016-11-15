@@ -27,7 +27,10 @@ import javafx.scene.image.ImageView;
 import java.util.ArrayList;
 
 public class Viewer implements ViewerService, RequireReadService{
-	private static final double defaultMainWidth=HardCodedParameters.defaultWidth,
+	private static final int spriteSlowDownRate=HardCodedParameters.spriteSlowDownRate;
+	private static final double locationMainScoreJoueurX=HardCodedParameters.locationScoreJoueurX,
+			locationMainScoreJoueurY=HardCodedParameters.locationScoreJoueurY,
+			defaultMainWidth=HardCodedParameters.defaultWidth,
 			defaultMainHeight=HardCodedParameters.defaultHeight;
 	private ReadService data;
 	private ImageView heroesAvatar;
@@ -71,9 +74,8 @@ public class Viewer implements ViewerService, RequireReadService{
 				"Round 1");
 		greets.setFont(new Font(.05*shrink*defaultMainHeight));
 
-		Text score = new Text(-0.1*shrink*defaultMainHeight+.5*shrink*defaultMainWidth,
-				-0.05*shrink*defaultMainWidth+shrink*defaultMainHeight,
-				"Score: "+data.getScore());
+		//setting of the player score
+		Text score = new Text(locationMainScoreJoueurX,locationMainScoreJoueurY,"Score : " + data.getScore());
 		score.setFont(new Font(.05*shrink*defaultMainHeight));
 
 		//int index=heroesAvatarViewportIndex/spriteSlowDownRate;
