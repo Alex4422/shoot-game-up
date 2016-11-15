@@ -22,23 +22,15 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import metier.Map;
 import javafx.scene.text.Font;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.geometry.Rectangle2D;
 
 import java.util.ArrayList;
 
 public class Viewer implements ViewerService, RequireReadService{
-	private static final int spriteSlowDownRate=HardCodedParameters.spriteSlowDownRate;
 	private static final double defaultMainWidth=HardCodedParameters.defaultWidth,
 			defaultMainHeight=HardCodedParameters.defaultHeight;
 	private ReadService data;
 	private ImageView heroesAvatar;
-	private Image heroesSpriteSheet;
-	//	private ArrayList<Rectangle2D> heroesAvatarViewports;
-	private ArrayList<Integer> heroesAvatarXModifiers;
-	private ArrayList<Integer> heroesAvatarYModifiers;
-	//	private int heroesAvatarViewportIndex;
 	private double xShrink,yShrink,shrink,xModifier,yModifier,heroesScale;
 
 	public Viewer(){}
@@ -57,10 +49,6 @@ public class Viewer implements ViewerService, RequireReadService{
 
 		//Yucky hard-conding
 		heroesAvatar = new ImageView(data.getHero().getImage());
-		heroesAvatarXModifiers = new ArrayList<Integer>();
-		heroesAvatarYModifiers = new ArrayList<Integer>();
-
-
 	}
 
 	@Override
@@ -76,7 +64,6 @@ public class Viewer implements ViewerService, RequireReadService{
 		data.getMap().setAxeY(yModifier);
 		data.getMap().setWidth(map.getWidth());
 		data.getMap().setHeight(map.getHeight());
-		System.out.println("viewer map height" + map.getHeight());
 		historiqueShoot();
 
 		Text greets = new Text(-0.1*shrink*defaultMainHeight+.5*shrink*defaultMainWidth,

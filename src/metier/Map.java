@@ -2,6 +2,7 @@ package metier;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import tools.HardCodedParameters;
 
 public class Map {
 
@@ -11,7 +12,6 @@ public class Map {
 	private double axeY;
 	
 	public Map(){
-		
 	}
 	
 	public Map(double axeX, double axeY, double width, double height) {

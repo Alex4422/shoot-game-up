@@ -81,7 +81,6 @@ public class Engine implements EngineService, RequireDataService{
 
 				data.setSoundEffect(Sound.SOUND.None);
 
-				System.out.println("engine map height" + data.getMap().getHeight());
 				for (PhantomService p:data.getPhantoms()){
 //					PhantomService p = data.getPhantoms().get(i);
 					if (p.getAction()==PhantomService.MOVE.LEFT) moveLeft(p);
@@ -93,8 +92,7 @@ public class Engine implements EngineService, RequireDataService{
 						data.setSoundEffect(Sound.SOUND.HeroesGotHit);
 						score++;
 					} else {
-						if (p.getPosition().y<data.getMap().getHeight() + 10) {
-							System.out.println("add phantom");
+						if (p.getPosition().y < HardCodedParameters.defaultHeight -120) {
 							phantoms.add(p);
 						}
 					}
@@ -209,13 +207,13 @@ public class Engine implements EngineService, RequireDataService{
 
 	private boolean isHeroOutsideMapLimit() {
 		Starship hero = data.getHero();
-		if (hero.getPosition().x + heroesVX - hero.getSizeX()/2 < data.getMap().getAxeX()) {
+		if (hero.getPosition().x + heroesVX < data.getMap().getAxeX()+25) {
 			return true;
-		} else if (hero.getPosition().x + heroesVX + hero.getSizeX()/2 > data.getMap().getWidth()){
+		} else if (hero.getPosition().x + heroesVX > HardCodedParameters.defaultWidth-25){
 			return true;
-		} else if (hero.getPosition().y + heroesVY + hero.getSizeY()/2 > data.getMap().getHeight()) {
+		} else if (hero.getPosition().y + heroesVY > HardCodedParameters.defaultHeight-10) {
 			return true;
-		} else if (hero.getPosition().y + heroesVY - hero.getSizeY()/2 < data.getMap().getAxeY()) {
+		} else if (hero.getPosition().y + heroesVY  < data.getMap().getAxeY()) {
 			return true;
 		} else {
 			return false;
