@@ -35,10 +35,10 @@ public class Viewer implements ViewerService, RequireReadService{
 	private ReadService data;
 	private ImageView heroesAvatar;
 	private Image heroesSpriteSheet;
-	private ArrayList<Rectangle2D> heroesAvatarViewports;
+//	private ArrayList<Rectangle2D> heroesAvatarViewports;
 	private ArrayList<Integer> heroesAvatarXModifiers;
 	private ArrayList<Integer> heroesAvatarYModifiers;
-	private int heroesAvatarViewportIndex;
+//	private int heroesAvatarViewportIndex;
 	private double xShrink,yShrink,shrink,xModifier,yModifier,heroesScale;
 
 	public Viewer(){}
@@ -59,22 +59,22 @@ public class Viewer implements ViewerService, RequireReadService{
 		//    heroesSpriteSheet = new Image("file:src/images/modern soldier large.png");
 		heroesAvatar = new ImageView(data.getHero().getImage());
 		//    heroesAvatar = new ImageView(heroesSpriteSheet);
-		    heroesAvatarViewports = new ArrayList<Rectangle2D>();
+		    //heroesAvatarViewports = new ArrayList<Rectangle2D>();
 		    heroesAvatarXModifiers = new ArrayList<Integer>();
 		    heroesAvatarYModifiers = new ArrayList<Integer>();
 
-		    heroesAvatarViewportIndex=0;
+		   // heroesAvatarViewportIndex=0;
 
 		//TODO: replace the following with XML loader
 		//    //heroesAvatarViewports.add(new Rectangle2D(301,386,95,192));
-		heroesAvatarViewports.add(new Rectangle2D(570,194,115,190));
-		heroesAvatarViewports.add(new Rectangle2D(398,386,133,192));
-		heroesAvatarViewports.add(new Rectangle2D(155,194,147,190));
-		heroesAvatarViewports.add(new Rectangle2D(785,386,127,194));
-		heroesAvatarViewports.add(new Rectangle2D(127,582,135,198));
-		heroesAvatarViewports.add(new Rectangle2D(264,582,111,200));
-		heroesAvatarViewports.add(new Rectangle2D(2,582,123,198));
-		heroesAvatarViewports.add(new Rectangle2D(533,386,115,192));
+//		heroesAvatarViewports.add(new Rectangle2D(570,194,115,190));
+//		heroesAvatarViewports.add(new Rectangle2D(398,386,133,192));
+//		heroesAvatarViewports.add(new Rectangle2D(155,194,147,190));
+//		heroesAvatarViewports.add(new Rectangle2D(785,386,127,194));
+//		heroesAvatarViewports.add(new Rectangle2D(127,582,135,198));
+//		heroesAvatarViewports.add(new Rectangle2D(264,582,111,200));
+//		heroesAvatarViewports.add(new Rectangle2D(2,582,123,198));
+//		heroesAvatarViewports.add(new Rectangle2D(533,386,115,192));
 		//heroesAvatarViewports.add(new Rectangle2D(204,386,95,192));
 
 		//heroesAvatarXModifiers.add(10);heroesAvatarYModifiers.add(-7);
@@ -93,7 +93,7 @@ public class Viewer implements ViewerService, RequireReadService{
 	@Override
 	public Parent getPanel(){
 		shrink=Math.min(xShrink,yShrink);
-		xModifier=.01*shrink*defaultMainHeight;
+		xModifier=.01*shrink*defaultMainWidth;
 		yModifier=.01*shrink*defaultMainHeight;
 
 		//Yucky hard-conding
@@ -115,22 +115,21 @@ public class Viewer implements ViewerService, RequireReadService{
 				"Score: "+data.getScore());
 		score.setFont(new Font(.05*shrink*defaultMainHeight));
 		
-		int index=heroesAvatarViewportIndex/spriteSlowDownRate;
-		heroesAvatar.setFitHeight(data.getHeroesHeight()*shrink);
+		//int index=heroesAvatarViewportIndex/spriteSlowDownRate;
+		heroesScale=data.getHero().getSizeY()*shrink/data.getHero().getImage().getHeight();
+		heroesAvatar.setFitHeight(data.getHero().getSizeY()*shrink);
 		heroesAvatar.setPreserveRatio(true);
 		heroesAvatar.setTranslateX(shrink*data.getHero().getPosition().x+
 				shrink*xModifier+
-				-heroesScale*.5*heroesAvatarViewports.get(index).getWidth()+
-				shrink*heroesScale*heroesAvatarXModifiers.get(index));
+				-heroesScale*.5*data.getHero().getImage().getWidth());
 		
 		heroesAvatar.setTranslateY(shrink*data.getHero().getPosition().y+
 				shrink*yModifier+
-				-heroesScale*.5*heroesAvatarViewports.get(index).getHeight()+
-				shrink*heroesScale*heroesAvatarYModifiers.get(index)
+				-heroesScale*.5*data.getHero().getImage().getHeight()
 				);
 
 
-		heroesAvatarViewportIndex=(heroesAvatarViewportIndex+1)%(heroesAvatarViewports.size()*spriteSlowDownRate);
+		//heroesAvatarViewportIndex=(heroesAvatarViewportIndex+1)%(heroesAvatarViewports.size()*spriteSlowDownRate);
 		Group panel = new Group();
 		panel.getChildren().addAll(map,greets,score,heroesAvatar);
 
@@ -151,7 +150,7 @@ public class Viewer implements ViewerService, RequireReadService{
 			double radius=2*Math.min(shrink*4,shrink*4);
 			Circle shoot = new Circle(radius,  Color.YELLOW);
 			shoot.setEffect(new Lighting());
-			shoot.setTranslateX(data.getListShoot().get(i).x);
+			shoot.setTranslateX(shrink*(data.getListShoot().get(i).x+radius));
 			System.out.println("X :" + shrink*data.getListShoot().get(i).x);
 			shoot.setTranslateY(shrink*data.getListShoot().get(i).y);
 			//System.out.println("Y :" + shrink*data.getListShoot().get(i).y);
@@ -174,12 +173,12 @@ public class Viewer implements ViewerService, RequireReadService{
 
 	private void historiqueShoot(){
 		for (int i =0; i<data.getListShoot().size();i++){
-			if (data.getListShoot().get(i).x+10>-2*xModifier+shrink*defaultMainWidth-100){
+			if (data.getListShoot().get(i).y-10<-2*yModifier+shrink*data.getMap().getHeight()-10){
 				System.out.println("remove");
 				data.getListShoot().remove(i);
 			}
 			else
-				data.getListShoot().get(i).y=data.getListShoot().get(i).y-10;
+				data.getListShoot().get(i).y=data.getListShoot().get(i).y-5;
 		}
 	}
 }

@@ -8,8 +8,8 @@ public class Hero extends Starship {
 	public Hero(){
 		player = new Player();
 		
-		this.setSizeX(HardCodedParameters.heroesStartX);
-		this.setSizeY(HardCodedParameters.heroesStartY);
+		this.setSizeX(HardCodedParameters.heroesWidth);
+		this.setSizeY(HardCodedParameters.heroesHeight);
 	}
 
 	/**
