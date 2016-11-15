@@ -146,15 +146,12 @@ public class Viewer implements ViewerService, RequireReadService{
 			panel.getChildren().add(phantomAvatar);
 		}
 
-		for (int i =0; i<data.getListShoot().size();i++){
+		for (int i =0; i<data.getHero().getListShot().size();i++){
 			double radius=2*Math.min(shrink*4,shrink*4);
 			Circle shoot = new Circle(radius,  Color.YELLOW);
 			shoot.setEffect(new Lighting());
-			shoot.setTranslateX(shrink*(data.getListShoot().get(i).x+radius));
-			System.out.println("X :" + shrink*data.getListShoot().get(i).x);
-			shoot.setTranslateY(shrink*data.getListShoot().get(i).y);
-			//System.out.println("Y :" + shrink*data.getListShoot().get(i).y);
-			System.out.println("X : "+data.getListShoot().get(i).x+ " Y : "+ data.getListShoot().get(i).y);
+			shoot.setTranslateX(shrink*(data.getHero().getListShot().get(i).x+radius));
+			shoot.setTranslateY(shrink*data.getHero().getListShot().get(i).y);
 			panel.getChildren().add(shoot);
 		}
 
@@ -172,13 +169,13 @@ public class Viewer implements ViewerService, RequireReadService{
 	}
 
 	private void historiqueShoot(){
-		for (int i =0; i<data.getListShoot().size();i++){
-			if (data.getListShoot().get(i).y-10<-2*yModifier+shrink*data.getMap().getHeight()-10){
-				System.out.println("remove");
-				data.getListShoot().remove(i);
+		for (int i =0; i<data.getHero().getListShot().size();i++){
+			if (data.getHero().getListShot().get(i).y-10<-2*yModifier+shrink*data.getMap().getHeight()-10){
+				data.getHero().getListShot().remove(i);
+//				data.getListShoot().remove(i);
 			}
 			else
-				data.getListShoot().get(i).y=data.getListShoot().get(i).y-5;
+				data.getHero().getListShot().get(i).y= data.getHero().getListShot().get(i).y-5;
 		}
 	}
 }

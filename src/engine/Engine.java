@@ -68,8 +68,9 @@ public class Engine implements EngineService, RequireDataService{
 				updatePositionHeroes();
 
 				if (shoot){
-		        	System.out.println("shoot : "+ data.getHero().getPosition().x + " y: " + data.getHero().getPosition().y);
-		        	data.getListShoot().add(new Position(data.getHero().getPosition().x,data.getHero().getPosition().y));
+					data.getHero().getShotService().fire(data.getHero());
+//		        	System.out.println("shoot : "+ data.getHero().getPosition().x + " y: " + data.getHero().getPosition().y);
+//		        	data.getListShoot().add(new Position(data.getHero().getPosition().x,data.getHero().getPosition().y));
 		        	shoot=false;
 		        }
 				

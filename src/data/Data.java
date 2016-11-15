@@ -31,7 +31,6 @@ public class Data implements DataService{
   private Sound.SOUND sound;
   private Starship hero;
   private Map map;
-  private ArrayList<Position> listShoot;
   private boolean shoot;
   
   public Data(){}
@@ -54,7 +53,7 @@ public class Data implements DataService{
     hero = new Hero();
     hero.setPosition(new Position(HardCodedParameters.heroesStartX,HardCodedParameters.heroesStartY));
     hero.setImage(new Image("file:src/images/spaceship-hero.png"));
-    listShoot=new ArrayList<Position>();
+    hero.setListShot(new ArrayList<Position>());
     
   }
 
@@ -111,7 +110,7 @@ public Starship getHero() {
 
 @Override
 public void setHero(Hero hero) {
-	// TODO Auto-generated method stub
+	this.hero = hero;
 	
 }
 
@@ -127,7 +126,5 @@ public Map getMap() {return this.map;}
 @Override
 public void setMap(Map map) {this.map = map;}
 
-@Override
-public List<Position> getListShoot() {return this.listShoot;}
 
 }

@@ -1,5 +1,7 @@
 package metier;
 
+import java.util.ArrayList;
+
 import algorithm.SimpleShot;
 import javafx.scene.image.Image;
 import specifications.BonusService;
@@ -21,12 +23,15 @@ public abstract class Starship implements StarshipService {
 	private short shotStrength;
 	private short shotIndex = 0;
 	private Image image;
+	private ArrayList<Position> listShot;
 	protected BonusService bonusService;
 	protected HealthService healthService;
 	protected ShotService shotService = new SimpleShot();
 	
 	//Constructeur par defaut
-	public Starship(){}
+	public Starship(){
+		
+	}
 	
 	public Image getImage() {
 		return image;
@@ -200,6 +205,21 @@ public abstract class Starship implements StarshipService {
 	 */
 	public void setHealthService(HealthService healthService) {
 		this.healthService = healthService;
+	}
+	
+
+	/**
+	 * @return the listShot
+	 */
+	public ArrayList<Position> getListShot() {
+		return listShot;
+	}
+
+	/**
+	 * @param listShot the listShot to set
+	 */
+	public void setListShot(ArrayList<Position> listShot) {
+		this.listShot = listShot;
 	}
 
 	/**
