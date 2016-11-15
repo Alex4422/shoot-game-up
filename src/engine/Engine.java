@@ -20,6 +20,10 @@ import specifications.PhantomService;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
+import metier.Hero;
+import metier.Starship;
+
 import java.util.Random;
 import java.util.ArrayList;
 
@@ -69,8 +73,6 @@ public class Engine implements EngineService, RequireDataService{
 
 				if (shoot){
 					data.getHero().getShotService().fire(data.getHero());
-//		        	System.out.println("shoot : "+ data.getHero().getPosition().x + " y: " + data.getHero().getPosition().y);
-//		        	data.getListShoot().add(new Position(data.getHero().getPosition().x,data.getHero().getPosition().y));
 		        	shoot=false;
 		        }
 				
@@ -79,17 +81,22 @@ public class Engine implements EngineService, RequireDataService{
 
 				data.setSoundEffect(Sound.SOUND.None);
 
+				System.out.println("engine map height" + data.getMap().getHeight());
 				for (PhantomService p:data.getPhantoms()){
+//					PhantomService p = data.getPhantoms().get(i);
 					if (p.getAction()==PhantomService.MOVE.LEFT) moveLeft(p);
 					if (p.getAction()==PhantomService.MOVE.RIGHT) moveRight(p);
 					if (p.getAction()==PhantomService.MOVE.UP) moveUp(p);
 					if (p.getAction()==PhantomService.MOVE.DOWN) moveDown(p);
-
+					
 					if (collisionHeroesPhantom(p)){
 						data.setSoundEffect(Sound.SOUND.HeroesGotHit);
 						score++;
 					} else {
-						if (p.getPosition().x>0) phantoms.add(p);
+						if (p.getPosition().y<data.getMap().getHeight() + 10) {
+							System.out.println("add phantom");
+							phantoms.add(p);
+						}
 					}
 				}
 
@@ -111,8 +118,8 @@ public class Engine implements EngineService, RequireDataService{
 	public void setHeroesCommand(User.COMMAND c){
 		if (c==User.COMMAND.LEFT) moveLeft=true;
 		if (c==User.COMMAND.RIGHT) moveRight=true;
-		if (c==User.COMMAND.UP) moveUp=true;
-		if (c==User.COMMAND.DOWN) moveDown=true;
+//		if (c==User.COMMAND.UP) moveUp=true;
+//		if (c==User.COMMAND.DOWN) moveDown=true;
 		if (c==User.COMMAND.SHOOT) shoot=true;
 	}
 
@@ -139,10 +146,13 @@ public class Engine implements EngineService, RequireDataService{
 	}
 
 	private void updatePositionHeroes(){
-//		data.setHeroesPosition(new Position(data.getHeroesPosition().x+heroesVX,data.getHeroesPosition().y+heroesVY));
-		data.getHero().setPosition(new Position(data.getHero().getPosition().x+heroesVX,data.getHero().getPosition().y+heroesVY));
-		//if (data.getHeroesPosition().x<0) data.setHeroesPosition(new Position(0,data.getHeroesPosition().y));
-		//etc...
+		if (!isHeroOutsideMapLimit()) {
+			data.getHero().setPosition(new Position(data.getHero().getPosition().x+heroesVX,data.getHero().getPosition().y+heroesVY));
+		}
+//		if (!isOutsideMapLimit(new Position(data.getHero().getPosition().x+heroesVX,data.getHero().getPosition().y+heroesVY))) {
+//			data.getHero().setPosition(new Position(data.getHero().getPosition().x+heroesVX,data.getHero().getPosition().y+heroesVY));
+//		}
+		
 	}
 
 	private void spawnPhantom(){
@@ -150,7 +160,7 @@ public class Engine implements EngineService, RequireDataService{
 		int y=0;
 		boolean cont=true;
 		while (cont) {
-			y=(int)(gen.nextInt((int)(HardCodedParameters.defaultHeight*.6))+HardCodedParameters.defaultHeight*.1);
+			x=(int)(gen.nextInt((int)(HardCodedParameters.defaultWidth*.6))+HardCodedParameters.defaultWidth*.1);
 			cont=false;
 			for (PhantomService p:data.getPhantoms()){
 				if (p.getPosition().equals(new Position(x,y))) cont=true;
@@ -160,15 +170,25 @@ public class Engine implements EngineService, RequireDataService{
 	}
 
 	private void moveLeft(PhantomService p){
-		p.setPosition(new Position(p.getPosition().x-phantomStep,p.getPosition().y));
+//		if (!isOutsideMapLimit(new Position(p.getPosition().x-phantomStep,p.getPosition().y))) {
+			p.setPosition(new Position(p.getPosition().x-phantomStep,p.getPosition().y));
+//		}
 	}
 
 	private void moveRight(PhantomService p){
-		p.setPosition(new Position(p.getPosition().x+phantomStep,p.getPosition().y));
+//		if (p.getPosition().x + phantomStep > data.getMap().getWidth()) {
+			p.setPosition(new Position(p.getPosition().x+phantomStep,p.getPosition().y));			
+//		}
+//		if (!isOutsideMapLimit(new Position(p.getPosition().x+phantomStep,p.getPosition().y))) {
+//			p.setPosition(new Position(p.getPosition().x+phantomStep,p.getPosition().y));
+//		}
+		
 	}
 
 	private void moveUp(PhantomService p){
-		p.setPosition(new Position(p.getPosition().x,p.getPosition().y-phantomStep));
+//		if (!isOutsideMapLimit(new Position(p.getPosition().x,p.getPosition().y-phantomStep))) {
+			p.setPosition(new Position(p.getPosition().x,p.getPosition().y-phantomStep));
+//		}
 	}
 
 	private void moveDown(PhantomService p){
@@ -177,14 +197,45 @@ public class Engine implements EngineService, RequireDataService{
 
 	private boolean collisionHeroesPhantom(PhantomService p){
 		return (
-				(data.getHeroesPosition().x-p.getPosition().x)*(data.getHeroesPosition().x-p.getPosition().x)+
-				(data.getHeroesPosition().y-p.getPosition().y)*(data.getHeroesPosition().y-p.getPosition().y) <
-				0.25*(data.getHeroesWidth()+data.getPhantomWidth())*(data.getHeroesWidth()+data.getPhantomWidth())
+				(data.getHero().getPosition().x-p.getPosition().x)*(data.getHero().getPosition().x-p.getPosition().x)+
+				(data.getHero().getPosition().y-p.getPosition().y)*(data.getHero().getPosition().y-p.getPosition().y) <
+				0.25*(data.getHero().getSizeY()+data.getPhantomHeight())*(data.getHero().getSizeY()+data.getPhantomHeight())
 				);
 	}
+//
+//	private boolean collisionHeroesPhantoms(){
+//		for (PhantomService p:data.getPhantoms()) if (collisionHeroesPhantom(p)) return true; return false;
+//	}
 
-	private boolean collisionHeroesPhantoms(){
-		for (PhantomService p:data.getPhantoms()) if (collisionHeroesPhantom(p)) return true; return false;
+	private boolean isHeroOutsideMapLimit() {
+		Starship hero = data.getHero();
+		if (hero.getPosition().x + heroesVX - hero.getSizeX()/2 < data.getMap().getAxeX()) {
+			return true;
+		} else if (hero.getPosition().x + heroesVX + hero.getSizeX()/2 > data.getMap().getWidth()){
+			return true;
+		} else if (hero.getPosition().y + heroesVY + hero.getSizeY()/2 > data.getMap().getHeight()) {
+			return true;
+		} else if (hero.getPosition().y + heroesVY - hero.getSizeY()/2 < data.getMap().getAxeY()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+
+	private boolean isBotOutsideMapLimit(Position p) {
+		Starship hero = data.getHero();
+		if (hero.getPosition().x + heroesVX - hero.getSizeX()/2 < data.getMap().getAxeX()) {
+			return true;
+		} else if (hero.getPosition().x + heroesVX + hero.getSizeX()/2 > data.getMap().getWidth()){
+			return true;
+		} else if (hero.getPosition().y + heroesVY + hero.getSizeY()/2 > data.getMap().getHeight()) {
+			return true;
+		} else if (hero.getPosition().y + heroesVY - hero.getSizeY()/2 < data.getMap().getAxeY()) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	private <T> T generateRandomBonus() {

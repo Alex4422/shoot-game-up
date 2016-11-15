@@ -19,7 +19,7 @@ public class MoveLeftPhantom implements PhantomService{
   public Position getPosition() { return position; }
 
   @Override
-  public PhantomService.MOVE getAction() { return PhantomService.MOVE.LEFT; }
+  public PhantomService.MOVE getAction() { return PhantomService.MOVE.DOWN; }
 
   @Override
   public void setPosition(Position p) { position=p; }

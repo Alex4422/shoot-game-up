@@ -35,10 +35,10 @@ public class Viewer implements ViewerService, RequireReadService{
 	private ReadService data;
 	private ImageView heroesAvatar;
 	private Image heroesSpriteSheet;
-//	private ArrayList<Rectangle2D> heroesAvatarViewports;
+	//	private ArrayList<Rectangle2D> heroesAvatarViewports;
 	private ArrayList<Integer> heroesAvatarXModifiers;
 	private ArrayList<Integer> heroesAvatarYModifiers;
-//	private int heroesAvatarViewportIndex;
+	//	private int heroesAvatarViewportIndex;
 	private double xShrink,yShrink,shrink,xModifier,yModifier,heroesScale;
 
 	public Viewer(){}
@@ -56,54 +56,28 @@ public class Viewer implements ViewerService, RequireReadService{
 		yModifier=0;
 
 		//Yucky hard-conding
-		//    heroesSpriteSheet = new Image("file:src/images/modern soldier large.png");
 		heroesAvatar = new ImageView(data.getHero().getImage());
-		//    heroesAvatar = new ImageView(heroesSpriteSheet);
-		    //heroesAvatarViewports = new ArrayList<Rectangle2D>();
-		    heroesAvatarXModifiers = new ArrayList<Integer>();
-		    heroesAvatarYModifiers = new ArrayList<Integer>();
+		heroesAvatarXModifiers = new ArrayList<Integer>();
+		heroesAvatarYModifiers = new ArrayList<Integer>();
 
-		   // heroesAvatarViewportIndex=0;
-
-		//TODO: replace the following with XML loader
-		//    //heroesAvatarViewports.add(new Rectangle2D(301,386,95,192));
-//		heroesAvatarViewports.add(new Rectangle2D(570,194,115,190));
-//		heroesAvatarViewports.add(new Rectangle2D(398,386,133,192));
-//		heroesAvatarViewports.add(new Rectangle2D(155,194,147,190));
-//		heroesAvatarViewports.add(new Rectangle2D(785,386,127,194));
-//		heroesAvatarViewports.add(new Rectangle2D(127,582,135,198));
-//		heroesAvatarViewports.add(new Rectangle2D(264,582,111,200));
-//		heroesAvatarViewports.add(new Rectangle2D(2,582,123,198));
-//		heroesAvatarViewports.add(new Rectangle2D(533,386,115,192));
-		//heroesAvatarViewports.add(new Rectangle2D(204,386,95,192));
-
-		//heroesAvatarXModifiers.add(10);heroesAvatarYModifiers.add(-7);
-		heroesAvatarXModifiers.add(6);heroesAvatarYModifiers.add(-6);
-		heroesAvatarXModifiers.add(2);heroesAvatarYModifiers.add(-8);
-		heroesAvatarXModifiers.add(1);heroesAvatarYModifiers.add(-10);
-		heroesAvatarXModifiers.add(1);heroesAvatarYModifiers.add(-13);
-		heroesAvatarXModifiers.add(5);heroesAvatarYModifiers.add(-15);
-		heroesAvatarXModifiers.add(5);heroesAvatarYModifiers.add(-13);
-		heroesAvatarXModifiers.add(0);heroesAvatarYModifiers.add(-9);
-		heroesAvatarXModifiers.add(0);heroesAvatarYModifiers.add(-6);
-		//heroesAvatarXModifiers.add(10);heroesAvatarYModifiers.add(-7);
 
 	}
 
 	@Override
 	public Parent getPanel(){
 		shrink=Math.min(xShrink,yShrink);
-		xModifier=.01*shrink*defaultMainWidth;
+		xModifier=.01*shrink*defaultMainHeight;
 		yModifier=.01*shrink*defaultMainHeight;
 
 		//Yucky hard-conding
 		Rectangle map = new Map(xModifier, yModifier, -2*xModifier+shrink*defaultMainWidth, -.2*shrink*defaultMainHeight+shrink*defaultMainHeight).draw();
-		historiqueShoot();
 
-		//		data.getMap().setAxeX(xModifier);
-		//		data.getMap().setAxeY(yModifier);
-		//		data.getMap().setWidth(-2*xModifier+shrink*defaultMainWidth);
-		//		data.getMap().setHeight(-.2*shrink*defaultMainHeight+shrink*defaultMainHeight);
+		data.getMap().setAxeX(xModifier);
+		data.getMap().setAxeY(yModifier);
+		data.getMap().setWidth(map.getWidth());
+		data.getMap().setHeight(map.getHeight());
+		System.out.println("viewer map height" + map.getHeight());
+		historiqueShoot();
 
 		Text greets = new Text(-0.1*shrink*defaultMainHeight+.5*shrink*defaultMainWidth,
 				-0.1*shrink*defaultMainWidth+shrink*defaultMainHeight,
@@ -114,7 +88,7 @@ public class Viewer implements ViewerService, RequireReadService{
 				-0.05*shrink*defaultMainWidth+shrink*defaultMainHeight,
 				"Score: "+data.getScore());
 		score.setFont(new Font(.05*shrink*defaultMainHeight));
-		
+
 		//int index=heroesAvatarViewportIndex/spriteSlowDownRate;
 		heroesScale=data.getHero().getSizeY()*shrink/data.getHero().getImage().getHeight();
 		heroesAvatar.setFitHeight(data.getHero().getSizeY()*shrink);
@@ -122,7 +96,7 @@ public class Viewer implements ViewerService, RequireReadService{
 		heroesAvatar.setTranslateX(shrink*data.getHero().getPosition().x+
 				shrink*xModifier+
 				-heroesScale*.5*data.getHero().getImage().getWidth());
-		
+
 		heroesAvatar.setTranslateY(shrink*data.getHero().getPosition().y+
 				shrink*yModifier+
 				-heroesScale*.5*data.getHero().getImage().getHeight()
@@ -168,11 +142,10 @@ public class Viewer implements ViewerService, RequireReadService{
 		yShrink=height/defaultMainHeight;
 	}
 
-	private void historiqueShoot(){
+	private void historiqueShoot(){		
 		for (int i =0; i<data.getHero().getListShot().size();i++){
-			if (data.getHero().getListShot().get(i).y-10<-2*yModifier+shrink*data.getMap().getHeight()-10){
+			if (data.getHero().getListShot().get(i).y<0){
 				data.getHero().getListShot().remove(i);
-//				data.getListShoot().remove(i);
 			}
 			else
 				data.getHero().getListShot().get(i).y= data.getHero().getListShot().get(i).y-5;
