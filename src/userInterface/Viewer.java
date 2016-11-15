@@ -71,9 +71,11 @@ public class Viewer implements ViewerService, RequireReadService{
 		data.getMap().setHeight(map.getHeight());
 		historiqueShoot();
 
+		Text score = new Text(locationMainScoreJoueurX,locationMainScoreJoueurY,"Score : " + data.getScore()); 
+	    score.setFont(new Font(.05*shrink*defaultMainHeight)); 
+	    
 	    Text levelNumber = new Text(locationMainGameLevelX,locationMainGameLevelY,"Level : " + data.getLevelNumber()); 
 	    levelNumber.setFont(new Font(.05*shrink*defaultMainHeight));
-		score.setFont(new Font(.05*shrink*defaultMainHeight));
 
 		//int index=heroesAvatarViewportIndex/spriteSlowDownRate;
 		heroesScale=data.getHero().getSizeY()*shrink/data.getHero().getImage().getHeight();
