@@ -25,7 +25,7 @@ import java.util.List;
 public class Data implements DataService{
   //private Heroes hercules;
   private Position heroesPosition;
-  private int stepNumber, score;
+  private int stepNumber, score, levelNumber;
   private ArrayList<PhantomService> phantoms;
   private double heroesWidth,heroesHeight,phantomWidth,phantomHeight;
   private Sound.SOUND sound;
@@ -42,6 +42,7 @@ public class Data implements DataService{
     phantoms = new ArrayList<PhantomService>();
     stepNumber = 0;
     score = 0;
+    levelNumber = 1;
     heroesWidth = HardCodedParameters.heroesWidth;
     heroesHeight = HardCodedParameters.heroesHeight;
     phantomWidth = HardCodedParameters.phantomWidth;
@@ -126,5 +127,13 @@ public Map getMap() {return this.map;}
 @Override
 public void setMap(Map map) {this.map = map;}
 
+
+public int getLevelNumber() {
+	return levelNumber;
+}
+
+public void addLevelNumber(int levelNumber) {
+	this.levelNumber += levelNumber;
+}
 
 }

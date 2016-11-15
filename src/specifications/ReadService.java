@@ -28,4 +28,5 @@ public interface ReadService {
 	public boolean getShoot();
 	public ArrayList<PhantomService> getPhantoms();
 	public Sound.SOUND getSoundEffect();
+	public int getLevelNumber();
 }

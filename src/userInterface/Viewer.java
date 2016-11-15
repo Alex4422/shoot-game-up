@@ -27,7 +27,12 @@ import javafx.scene.image.ImageView;
 import java.util.ArrayList;
 
 public class Viewer implements ViewerService, RequireReadService{
-	private static final double defaultMainWidth=HardCodedParameters.defaultWidth,
+	private static final int spriteSlowDownRate=HardCodedParameters.spriteSlowDownRate;
+	private static final double locationMainScoreJoueurX=HardCodedParameters.locationScoreJoueurX,
+			locationMainScoreJoueurY=HardCodedParameters.locationScoreJoueurY,
+			locationMainGameLevelX=HardCodedParameters.locationGameLevelX, 
+			locationMainGameLevelY=HardCodedParameters.locationGameLevelY,
+			defaultMainWidth=HardCodedParameters.defaultWidth,
 			defaultMainHeight=HardCodedParameters.defaultHeight;
 	private ReadService data;
 	private ImageView heroesAvatar;
@@ -66,14 +71,8 @@ public class Viewer implements ViewerService, RequireReadService{
 		data.getMap().setHeight(map.getHeight());
 		historiqueShoot();
 
-		Text greets = new Text(-0.1*shrink*defaultMainHeight+.5*shrink*defaultMainWidth,
-				-0.1*shrink*defaultMainWidth+shrink*defaultMainHeight,
-				"Round 1");
-		greets.setFont(new Font(.05*shrink*defaultMainHeight));
-
-		Text score = new Text(-0.1*shrink*defaultMainHeight+.5*shrink*defaultMainWidth,
-				-0.05*shrink*defaultMainWidth+shrink*defaultMainHeight,
-				"Score: "+data.getScore());
+	    Text levelNumber = new Text(locationMainGameLevelX,locationMainGameLevelY,"Level : " + data.getLevelNumber()); 
+	    levelNumber.setFont(new Font(.05*shrink*defaultMainHeight));
 		score.setFont(new Font(.05*shrink*defaultMainHeight));
 
 		//int index=heroesAvatarViewportIndex/spriteSlowDownRate;
@@ -92,7 +91,7 @@ public class Viewer implements ViewerService, RequireReadService{
 
 		//heroesAvatarViewportIndex=(heroesAvatarViewportIndex+1)%(heroesAvatarViewports.size()*spriteSlowDownRate);
 		Group panel = new Group();
-		panel.getChildren().addAll(map,greets,score,heroesAvatar);
+		panel.getChildren().addAll(map,levelNumber,score,heroesAvatar);
 
 		ArrayList<PhantomService> phantoms = data.getPhantoms();
 		PhantomService p;
