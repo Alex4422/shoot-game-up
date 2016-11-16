@@ -9,7 +9,7 @@ package data;
 import tools.HardCodedParameters;
 import tools.Position;
 import tools.Sound;
-
+import specifications.BonusService;
 import specifications.DataService;
 import javafx.scene.image.Image;
 import metier.Alien;
@@ -32,6 +32,7 @@ public class Data implements DataService{
 	private Player player;
 	private Map map;
 	private boolean shoot;
+	private BonusService bonus;
 
 	public Data(){}
 
@@ -45,6 +46,7 @@ public class Data implements DataService{
 		phantomHeight = HardCodedParameters.phantomHeight;
 		sound = Sound.SOUND.None;
 		map = new Map();
+		bonus = null;
 
 		//*********** STARSHIP ****************
 		player = new Player();
@@ -123,5 +125,16 @@ public class Data implements DataService{
 	public int getLevelNumber() {return levelNumber;}
 
 	public void addLevelNumber(int levelNumber) {this.levelNumber += levelNumber;}
+
+	@Override
+	public BonusService getBonusService() {
+		return this.bonus;
+	}
+
+	@Override
+	public void setBonusService(BonusService bonus) {
+		this.bonus = bonus;
+		
+	}
 
 }

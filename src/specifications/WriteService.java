@@ -29,4 +29,5 @@ public interface WriteService {
 	public void setShoot(boolean shoot);
 	public void setMap(Map map);
 	public void addLevelNumber(int levelNumber);
+	public void setBonusService(BonusService bonus);
 }

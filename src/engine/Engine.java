@@ -12,18 +12,25 @@ import tools.Position;
 import tools.Sound;
 
 import specifications.EngineService;
+import specifications.HealthService;
+import specifications.BonusService;
 import specifications.DataService;
 import specifications.RequireDataService;
+import specifications.ShotService;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
+import algorithm.HealthBonus;
+import algorithm.ShotBonus;
 import algorithm.SimpleShot;
 import metier.Alien;
 import metier.Starship;
 
 import java.util.Random;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Engine implements EngineService, RequireDataService{
 	private static final double friction=HardCodedParameters.friction,
@@ -33,7 +40,7 @@ public class Engine implements EngineService, RequireDataService{
 	private DataService data;
 	private Random gen;
 	private short spawnedAlien;
-	private boolean moveLeft,moveRight,moveUp,moveDown,shoot,isBossSpawn;
+	private boolean moveLeft,moveRight,moveUp,moveDown,shoot,isBossSpawn,dropBonus;
 	private double heroesVX,heroesVY;
 
 	public Engine(){}
@@ -53,6 +60,7 @@ public class Engine implements EngineService, RequireDataService{
 		moveDown = false;
 		shoot = false;
 		isBossSpawn = false;
+		dropBonus = false;
 		heroesVX = 0;
 		heroesVY = 0;
 		spawnedAlien = 0;
@@ -82,10 +90,22 @@ public class Engine implements EngineService, RequireDataService{
 				updateSpeedHeroes();
 				updateCommandHeroes();
 				updatePositionHeroes();
+				
+				if (data.getStepNumber() % 30 == 0 && data.getBonusService() == null) {
+					dropBonus = true;
+				}
+				if (data.getBonusService() != null) {
+					historiqueBonus();
+				}
 
 				if (shoot){
 					data.getHero().getShotService().fire(data.getHero());
 					shoot=false;
+				}
+				
+				if (dropBonus) {
+					generateRandomBonusService();
+					dropBonus = false;
 				}
 
 				ArrayList<Alien> aliens = new ArrayList<Alien>();
@@ -223,13 +243,12 @@ public class Engine implements EngineService, RequireDataService{
 				0.25*(data.getHero().getSizeY()+data.getPhantomHeight())*(data.getHero().getSizeY()+data.getPhantomHeight())
 				);
 	}
-
+	
 	private void collisionHerosBulletAlien(Alien alien){
 		for(int i = 0 ; i < data.getHero().getListShot().size() ; i++){         
 			if(((alien.getPosition().x+15-data.getHero().getListShot().get(i).x)*(alien.getPosition().x+15-data.getHero().getListShot().get(i).x))+
 				(alien.getPosition().y+10-data.getHero().getListShot().get(i).y)*(alien.getPosition().y+10-data.getHero().getListShot().get(i).y) <
 					0.25*(alien.getSizeY()+10)*(alien.getSizeX()+8)){
-				System.out.println("delete bullet");
 				alien.setLife((short) (alien.getLife()- data.getHero().getShotStrength()));
 				data.getHero().getListShot().remove(i);
 			}
@@ -271,7 +290,43 @@ public class Engine implements EngineService, RequireDataService{
 		}
 	}
 
-	private <T> T generateRandomBonus() {
-		return null;
+	private void generateRandomBonusService() {
+		BonusService bonus;
+		List<String> bonusList = Arrays.asList("shot", "health");
+		String sBonus = bonusList.get(new Random().nextInt(bonusList.size()));
+		System.out.println("random sBonus: " + sBonus);
+		
+		if (sBonus == "shot") {
+			bonus = new ShotBonus();
+		} else {
+			bonus = new HealthBonus();
+		}
+		data.setBonusService(bonus);
 	}
+	
+
+	private void historiqueBonus() {
+		if (data.getBonusService().getPosition().y > HardCodedParameters.defaultHeight) {
+			data.setBonusService(null);
+		} else {
+			data.getBonusService().getPosition().y += 10;
+			collisionBonusObject(data.getBonusService());
+		}
+	}
+
+	private void collisionBonusObject(BonusService bonus){
+		if ((data.getHero().getPosition().x-bonus.getPosition().x)*(data.getHero().getPosition().x-bonus.getPosition().x)+
+				(data.getHero().getPosition().y-bonus.getPosition().y)*(data.getHero().getPosition().y-bonus.getPosition().y) <
+				0.25*(data.getHero().getSizeY()+10)*(data.getHero().getSizeY()+10)) {						
+
+			System.out.println("*************colision hero bonus");
+			data.setBonusService(null);
+			
+		} else if (bonus.getPosition().y > HardCodedParameters.defaultHeight - 120) {
+			System.out.println("********colision map bonus");
+			data.setBonusService(null);
+		}
+	}
+
+
 }

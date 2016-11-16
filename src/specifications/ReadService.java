@@ -29,4 +29,5 @@ public interface ReadService {
 	public ArrayList<Alien> getAliens();
 	public Sound.SOUND getSoundEffect();
 	public int getLevelNumber();
+	public BonusService getBonusService();
 }

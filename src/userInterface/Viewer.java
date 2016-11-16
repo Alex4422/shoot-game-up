@@ -11,7 +11,7 @@ import tools.HardCodedParameters;
 import specifications.ViewerService;
 import specifications.ReadService;
 import specifications.RequireReadService;
-
+import specifications.ShotService;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.effect.Lighting;
@@ -25,6 +25,8 @@ import javafx.scene.text.Font;
 import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
+
+import algorithm.ShotBonus;
 
 public class Viewer implements ViewerService, RequireReadService{
 	private static final int spriteSlowDownRate=HardCodedParameters.spriteSlowDownRate;
@@ -123,6 +125,19 @@ public class Viewer implements ViewerService, RequireReadService{
 			shoot.setTranslateY(shrink*data.getHero().getListShot().get(i).y);
 			panel.getChildren().add(shoot);
 		}
+		
+		if (data.getBonusService() != null) {
+			double radius=2*Math.min(shrink*4,shrink*4);
+			Circle bonusIcon = new Circle(radius);
+			bonusIcon.setFill(Color.GREEN);
+			if (data.getBonusService() instanceof ShotBonus) {
+				bonusIcon.setFill(Color.RED);
+			}
+			bonusIcon.setTranslateX(data.getBonusService().getPosition().x+radius);
+			bonusIcon.setTranslateY(shrink*data.getBonusService().getPosition().y);
+			bonusIcon.setEffect(new Lighting());
+			panel.getChildren().add(bonusIcon);
+		}
 
 		return panel;
 	}
@@ -146,4 +161,5 @@ public class Viewer implements ViewerService, RequireReadService{
 				data.getHero().getListShot().get(i).y= data.getHero().getListShot().get(i).y-5;
 		}
 	}
+	
 }
