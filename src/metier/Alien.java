@@ -14,7 +14,7 @@ public class Alien extends Starship{
 		this.setPosition(p);
 		this.setSizeX(HardCodedParameters.alienWidth);
 		this.setSizeY(HardCodedParameters.alienHeight);
-		this.setImage(new Image("file:src/images/spaceship-hero.png"));
+		this.setImage(new Image("file:src/images/alien.png"));
 	}
 	
 	public MOVE getAction(){ return direction;};

@@ -9,7 +9,10 @@ public class Game {
 	private int ennemyKilled;
 	
 	public Game(){
-		
+		this.level = 1;
+		this.remainingLives = 3;
+		this.currentScore = 0;
+		this.ennemyKilled = 0;
 	}
 
 	/**

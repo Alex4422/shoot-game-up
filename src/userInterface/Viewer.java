@@ -100,10 +100,18 @@ public class Viewer implements ViewerService, RequireReadService{
 
 		for (int i=0; i<aliens.size();i++){
 			alien=aliens.get(i);
-			double radius=.5*Math.min(shrink*data.getPhantomWidth(),shrink*data.getPhantomHeight());
 			ImageView imageAlien = new ImageView(alien.getImage());
-			imageAlien.setTranslateX(shrink*alien.getPosition().x+shrink*xModifier-radius);
-			imageAlien.setTranslateY(shrink*alien.getPosition().y+shrink*yModifier-radius);
+			
+			imageAlien.setFitHeight(alien.getSizeY()*shrink);
+			imageAlien.setPreserveRatio(true);
+			imageAlien.setTranslateX(shrink*alien.getPosition().x+
+					shrink*xModifier+
+					-heroesScale*.5*alien.getImage().getWidth());
+
+			imageAlien.setTranslateY(shrink*alien.getPosition().y+
+					shrink*yModifier+
+					-heroesScale*.5*alien.getImage().getHeight()
+					);
 			panel.getChildren().add(imageAlien);
 		}
 

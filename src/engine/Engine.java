@@ -28,12 +28,12 @@ import java.util.ArrayList;
 public class Engine implements EngineService, RequireDataService{
 	private static final double friction=HardCodedParameters.friction,
 			heroesStep=HardCodedParameters.heroesStep,
-			phantomStep=HardCodedParameters.phantomStep;
+			alienStep=HardCodedParameters.alienStep;
 	private Timer engineClock;
 	private DataService data;
 	private Random gen;
 	private short spawnedAlien;
-	private boolean moveLeft,moveRight,moveUp,moveDown,shoot;
+	private boolean moveLeft,moveRight,moveUp,moveDown,shoot,isBossSpawn;
 	private double heroesVX,heroesVY;
 
 	public Engine(){}
@@ -52,6 +52,7 @@ public class Engine implements EngineService, RequireDataService{
 		moveUp = false;
 		moveDown = false;
 		shoot = false;
+		isBossSpawn = false;
 		heroesVX = 0;
 		heroesVY = 0;
 		spawnedAlien = 0;
@@ -62,15 +63,19 @@ public class Engine implements EngineService, RequireDataService{
 		engineClock.schedule(new TimerTask(){
 			public void run() {
 				//System.out.println("Game step #"+data.getStepNumber()+": checked.");
-
 				if (data.getGame().getEnnemyKilled() == HardCodedParameters.nbAliensSpawn){
 					data.getGame().startNewLevel(data.getGame().getLevel());
 					data.getHero().setShotService(new SimpleShot());
 					data.getHero().setShotIndex((short)0);
+					data.getPlayer().setTotalKill(data.getGame().getEnnemyKilled() + data.getPlayer().getTotalKill());
+					data.getGame().setEnnemyKilled(0);
+					isBossSpawn = false;
 					spawnedAlien = 0;
-				} else if (data.getGame().getEnnemyKilled() == HardCodedParameters.nbAliensSpawn-1){
+				} else if (!isBossSpawn &&
+						data.getGame().getEnnemyKilled() == HardCodedParameters.nbAliensSpawn-1){
 					spawnBoss();
-				} else if(spawnedAlien < HardCodedParameters.nbAliensSpawn){
+					isBossSpawn = true;
+				} else if(!isBossSpawn && spawnedAlien < HardCodedParameters.nbAliensSpawn-1){
 					spawnAlien();
 				}
 
@@ -96,10 +101,13 @@ public class Engine implements EngineService, RequireDataService{
 					
 					if (collisionHeroeAlien(p)){
 						data.setSoundEffect(Sound.SOUND.HeroesGotHit);
+						data.getGame().setEnnemyKilled(data.getGame().getEnnemyKilled()+1);
 						score++;
 					} else {
 						if (p.getPosition().y < HardCodedParameters.defaultHeight -120) {
 							aliens.add(p);
+						} else {
+							data.getGame().setEnnemyKilled(data.getGame().getEnnemyKilled()+1);
 						}
 					}
 				}
@@ -186,13 +194,13 @@ public class Engine implements EngineService, RequireDataService{
 	
 	private void moveLeft(Alien p){
 //		if (!isOutsideMapLimit(new Position(p.getPosition().x-phantomStep,p.getPosition().y))) {
-			p.setPosition(new Position(p.getPosition().x-phantomStep,p.getPosition().y));
+			p.setPosition(new Position(p.getPosition().x-alienStep,p.getPosition().y));
 //		}
 	}
 
 	private void moveRight(Alien p){
 //		if (p.getPosition().x + phantomStep > data.getMap().getWidth()) {
-			p.setPosition(new Position(p.getPosition().x+phantomStep,p.getPosition().y));			
+			p.setPosition(new Position(p.getPosition().x+alienStep,p.getPosition().y));			
 //		}
 //		if (!isOutsideMapLimit(new Position(p.getPosition().x+phantomStep,p.getPosition().y))) {
 //			p.setPosition(new Position(p.getPosition().x+phantomStep,p.getPosition().y));
@@ -201,7 +209,7 @@ public class Engine implements EngineService, RequireDataService{
 	}
 
 	private void moveDown(Alien p){
-		p.setPosition(new Position(p.getPosition().x,p.getPosition().y+phantomStep));
+		p.setPosition(new Position(p.getPosition().x,p.getPosition().y+alienStep));
 	}
 
 	private boolean collisionHeroeAlien(Alien alien){
