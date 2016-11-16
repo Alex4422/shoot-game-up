@@ -11,129 +11,117 @@ import tools.Position;
 import tools.Sound;
 
 import specifications.DataService;
-import specifications.PhantomService;
-
-import data.ia.MoveLeftPhantom;
 import javafx.scene.image.Image;
+import metier.Alien;
+import metier.Game;
 import metier.Hero;
 import metier.Map;
+import metier.Player;
 import metier.Starship;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Data implements DataService{
-  //private Heroes hercules;
-  private Position heroesPosition;
-  private int stepNumber, score, levelNumber;
-  private ArrayList<PhantomService> phantoms;
-  private double heroesWidth,heroesHeight,phantomWidth,phantomHeight;
-  private Sound.SOUND sound;
-  private Starship hero;
-  private Map map;
-  private boolean shoot;
-  
-  public Data(){}
 
-  @Override
-  public void init(){
-    //hercules = new Heroes;
-    heroesPosition = new Position(HardCodedParameters.heroesStartX,HardCodedParameters.heroesStartY);
-    phantoms = new ArrayList<PhantomService>();
-    stepNumber = 0;
-    score = 0;
-    levelNumber = 1;
-    heroesWidth = HardCodedParameters.heroesWidth;
-    heroesHeight = HardCodedParameters.heroesHeight;
-    phantomWidth = HardCodedParameters.phantomWidth;
-    phantomHeight = HardCodedParameters.phantomHeight;
-    sound = Sound.SOUND.None;
-    map = new Map();
-    
-    //*********** STARSHIP ****************
-    hero = new Hero();
-    hero.setPosition(new Position(HardCodedParameters.heroesStartX,HardCodedParameters.heroesStartY));
-    hero.setImage(new Image("file:src/images/spaceship-hero.png"));
-    hero.setListShot(new ArrayList<Position>());
-    
-  }
+	private int stepNumber, score, levelNumber;
+	private ArrayList<Alien> aliens;
+	private double phantomWidth,phantomHeight;
+	private Sound.SOUND sound;
+	private Starship hero;
+	private Game game;
+	private Player player;
+	private Map map;
+	private boolean shoot;
 
-  @Override
-  public Position getHeroesPosition(){ return heroesPosition; }
-  
-  @Override
-  public double getHeroesWidth(){ return heroesWidth; }
-  
-  @Override
-  public double getHeroesHeight(){ return heroesHeight; }
-  
-  @Override
-  public double getPhantomWidth(){ return phantomWidth; }
-  
-  @Override
-  public double getPhantomHeight(){ return phantomHeight; }
+	public Data(){}
 
-  @Override
-  public int getStepNumber(){ return stepNumber; }
-  
-  @Override
-  public int getScore(){ return score; }
+	@Override
+	public void init(){
+		aliens = new ArrayList<Alien>();
+		stepNumber = 0;
+		score = 0;
+		levelNumber = 1;
+		phantomWidth = HardCodedParameters.phantomWidth;
+		phantomHeight = HardCodedParameters.phantomHeight;
+		sound = Sound.SOUND.None;
+		map = new Map();
 
-  @Override
-  public ArrayList<PhantomService> getPhantoms(){ return phantoms; }
-  
-  @Override
-  public Sound.SOUND getSoundEffect() { return sound; }
+		//*********** STARSHIP ****************
+		player = new Player();
+		game = new Game();
+		hero = new Hero(player);
+		hero.setPosition(new Position(HardCodedParameters.heroesStartX,HardCodedParameters.heroesStartY));
+		hero.setImage(new Image("file:src/images/spaceship-hero.png"));
+		hero.setListShot(new ArrayList<Position>());
 
-  @Override
-  public void setHeroesPosition(Position p) { heroesPosition=p; }
-  
-  @Override
-  public void setStepNumber(int n){ stepNumber=n; }
-  
-  @Override
-  public void addScore(int score){ this.score+=score; }
+	}
 
-  @Override
-  public void addPhantom(Position p) { phantoms.add(new MoveLeftPhantom(p)); }
-  
-  @Override
-  public void setPhantoms(ArrayList<PhantomService> phantoms) { this.phantoms=phantoms; }
-  
-  @Override
-  public void setSoundEffect(Sound.SOUND s) { sound=s; }
+	@Override
+	public double getPhantomWidth(){ return phantomWidth; }
 
-@Override
-public Starship getHero() {
-	// TODO Auto-generated method stub
-	return this.hero;
-}
+	@Override
+	public double getPhantomHeight(){ return phantomHeight; }
 
-@Override
-public void setHero(Hero hero) {
-	this.hero = hero;
-	
-}
+	@Override
+	public int getStepNumber(){ return stepNumber; }
 
-@Override
-public boolean getShoot() {return this.shoot;}
+	@Override
+	public int getScore(){ return score; }
 
-@Override
-public void setShoot(boolean shoot) {this.shoot = shoot;}
+	@Override
+	public Sound.SOUND getSoundEffect() { return sound; }
 
-@Override
-public Map getMap() {return this.map;}
+	@Override
+	public void setStepNumber(int n){ stepNumber=n; }
 
-@Override
-public void setMap(Map map) {this.map = map;}
+	@Override
+	public void addScore(int score){ this.score+=score; }
+
+	@Override
+	public void setSoundEffect(Sound.SOUND s) { sound=s; }
+
+	@Override
+	public Starship getHero() {return this.hero;}
+
+	@Override
+	public void setHero(Hero hero) {this.hero = hero;}
+
+	@Override
+	public boolean getShoot() {return this.shoot;}
+
+	@Override
+	public void setShoot(boolean shoot) {this.shoot = shoot;}
+
+	@Override
+	public Map getMap() {return this.map;}
+
+	@Override
+	public void setMap(Map map) {this.map = map;}
+
+	@Override
+	public ArrayList<Alien> getAliens() {return this.aliens;}
+
+	@Override
+	public void addAlien(Position p) {aliens.add(new Alien(p));}
+
+	@Override
+	public void setAliens(ArrayList<Alien> alien) {this.aliens = alien;}
+
+	@Override
+	public Game getGame() {return this.game;}
+
+	@Override
+	public Player getPlayer() {return this.player;}
+
+	@Override
+	public void setGame(Game game) {this.game = game;}
+
+	@Override
+	public void setPlayer(Player player) {this.player = player;}
 
 
-public int getLevelNumber() {
-	return levelNumber;
-}
+	public int getLevelNumber() {return levelNumber;}
 
-public void addLevelNumber(int levelNumber) {
-	this.levelNumber += levelNumber;
-}
+	public void addLevelNumber(int levelNumber) {this.levelNumber += levelNumber;}
 
 }

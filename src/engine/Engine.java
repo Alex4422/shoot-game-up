@@ -12,16 +12,14 @@ import tools.Position;
 import tools.Sound;
 
 import specifications.EngineService;
-import specifications.BonusService;
 import specifications.DataService;
 import specifications.RequireDataService;
-import specifications.ViewerService;
-import specifications.PhantomService;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-import metier.Hero;
+import algorithm.SimpleShot;
+import metier.Alien;
 import metier.Starship;
 
 import java.util.Random;
@@ -33,8 +31,8 @@ public class Engine implements EngineService, RequireDataService{
 			phantomStep=HardCodedParameters.phantomStep;
 	private Timer engineClock;
 	private DataService data;
-	private User.COMMAND command;
 	private Random gen;
+	private short spawnedAlien;
 	private boolean moveLeft,moveRight,moveUp,moveDown,shoot;
 	private double heroesVX,heroesVY;
 
@@ -48,7 +46,6 @@ public class Engine implements EngineService, RequireDataService{
 	@Override
 	public void init(){
 		engineClock = new Timer();
-		command = User.COMMAND.NONE;
 		gen = new Random();
 		moveLeft = false;
 		moveRight = false;
@@ -57,6 +54,7 @@ public class Engine implements EngineService, RequireDataService{
 		shoot = false;
 		heroesVX = 0;
 		heroesVY = 0;
+		spawnedAlien = 0;
 	}
 
 	@Override
@@ -65,7 +63,16 @@ public class Engine implements EngineService, RequireDataService{
 			public void run() {
 				//System.out.println("Game step #"+data.getStepNumber()+": checked.");
 
-				if (gen.nextInt(10)<3) spawnPhantom();
+				if (data.getGame().getEnnemyKilled() == HardCodedParameters.nbAliensSpawn){
+					data.getGame().startNewLevel(data.getGame().getLevel());
+					data.getHero().setShotService(new SimpleShot());
+					data.getHero().setShotIndex((short)0);
+					spawnedAlien = 0;
+				} else if (data.getGame().getEnnemyKilled() == HardCodedParameters.nbAliensSpawn-1){
+					spawnBoss();
+				} else if(spawnedAlien < HardCodedParameters.nbAliensSpawn){
+					spawnAlien();
+				}
 
 				updateSpeedHeroes();
 				updateCommandHeroes();
@@ -76,31 +83,30 @@ public class Engine implements EngineService, RequireDataService{
 		        	shoot=false;
 		        }
 				
-				ArrayList<PhantomService> phantoms = new ArrayList<PhantomService>();
+				ArrayList<Alien> aliens = new ArrayList<Alien>();
 				int score=0;
 
 				data.setSoundEffect(Sound.SOUND.None);
 
-				for (PhantomService p:data.getPhantoms()){
+				for (Alien p:data.getAliens()){
 //					PhantomService p = data.getPhantoms().get(i);
-					if (p.getAction()==PhantomService.MOVE.LEFT) moveLeft(p);
-					if (p.getAction()==PhantomService.MOVE.RIGHT) moveRight(p);
-					if (p.getAction()==PhantomService.MOVE.UP) moveUp(p);
-					if (p.getAction()==PhantomService.MOVE.DOWN) moveDown(p);
+					if (p.getAction()==Alien.MOVE.LEFT) moveLeft(p);
+					if (p.getAction()==Alien.MOVE.RIGHT) moveRight(p);
+					if (p.getAction()==Alien.MOVE.DOWN) moveDown(p);
 					
-					if (collisionHeroesPhantom(p)){
+					if (collisionHeroeAlien(p)){
 						data.setSoundEffect(Sound.SOUND.HeroesGotHit);
 						score++;
 					} else {
 						if (p.getPosition().y < HardCodedParameters.defaultHeight -120) {
-							phantoms.add(p);
+							aliens.add(p);
 						}
 					}
 				}
 
 				data.addScore(score);
 
-				data.setPhantoms(phantoms);
+				data.setAliens(aliens);
 
 				data.setStepNumber(data.getStepNumber()+1);
 			}
@@ -153,27 +159,38 @@ public class Engine implements EngineService, RequireDataService{
 		
 	}
 
-	private void spawnPhantom(){
-		int x=(int)(HardCodedParameters.defaultWidth*.9);
+	private void spawnAlien(){
+		int x=(int)(HardCodedParameters.defaultWidth);
 		int y=0;
 		boolean cont=true;
 		while (cont) {
-			x=(int)(gen.nextInt((int)(HardCodedParameters.defaultWidth*.6))+HardCodedParameters.defaultWidth*.1);
+			x=(int)(gen.nextInt((int)(HardCodedParameters.defaultWidth)));
 			cont=false;
-			for (PhantomService p:data.getPhantoms()){
+			for (Alien p:data.getAliens()){
 				if (p.getPosition().equals(new Position(x,y))) cont=true;
 			}
 		}
-		data.addPhantom(new Position(x,y));
+		data.addAlien(new Position(x,y));
+		spawnedAlien++;
 	}
-
-	private void moveLeft(PhantomService p){
+	
+	private void spawnBoss(){
+		int x=(int)(HardCodedParameters.defaultWidth/2);
+		int y=0;
+		data.addAlien(new Position(x,y));
+		data.getAliens().get(0).setSizeX(HardCodedParameters.bossAlienWidth);
+		data.getAliens().get(0).setSizeY(HardCodedParameters.bossAlienHeight);
+		data.getAliens().get(0).setSpeed((short)(HardCodedParameters.bossAlienStep));
+		spawnedAlien++;
+	}
+	
+	private void moveLeft(Alien p){
 //		if (!isOutsideMapLimit(new Position(p.getPosition().x-phantomStep,p.getPosition().y))) {
 			p.setPosition(new Position(p.getPosition().x-phantomStep,p.getPosition().y));
 //		}
 	}
 
-	private void moveRight(PhantomService p){
+	private void moveRight(Alien p){
 //		if (p.getPosition().x + phantomStep > data.getMap().getWidth()) {
 			p.setPosition(new Position(p.getPosition().x+phantomStep,p.getPosition().y));			
 //		}
@@ -183,20 +200,14 @@ public class Engine implements EngineService, RequireDataService{
 		
 	}
 
-	private void moveUp(PhantomService p){
-//		if (!isOutsideMapLimit(new Position(p.getPosition().x,p.getPosition().y-phantomStep))) {
-			p.setPosition(new Position(p.getPosition().x,p.getPosition().y-phantomStep));
-//		}
-	}
-
-	private void moveDown(PhantomService p){
+	private void moveDown(Alien p){
 		p.setPosition(new Position(p.getPosition().x,p.getPosition().y+phantomStep));
 	}
 
-	private boolean collisionHeroesPhantom(PhantomService p){
+	private boolean collisionHeroeAlien(Alien alien){
 		return (
-				(data.getHero().getPosition().x-p.getPosition().x)*(data.getHero().getPosition().x-p.getPosition().x)+
-				(data.getHero().getPosition().y-p.getPosition().y)*(data.getHero().getPosition().y-p.getPosition().y) <
+				(data.getHero().getPosition().x-alien.getPosition().x)*(data.getHero().getPosition().x-alien.getPosition().x)+
+				(data.getHero().getPosition().y-alien.getPosition().y)*(data.getHero().getPosition().y-alien.getPosition().y) <
 				0.25*(data.getHero().getSizeY()+data.getPhantomHeight())*(data.getHero().getSizeY()+data.getPhantomHeight())
 				);
 	}

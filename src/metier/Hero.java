@@ -3,10 +3,12 @@ package metier;
 import tools.HardCodedParameters;
 
 public class Hero extends Starship {
+	
 	private Player player;
 	
-	public Hero(){
-		player = new Player();
+	
+	public Hero(Player player){
+		this.player = player;
 		
 		this.setSizeX(HardCodedParameters.heroesWidth);
 		this.setSizeY(HardCodedParameters.heroesHeight);

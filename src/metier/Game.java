@@ -1,5 +1,7 @@
 package metier;
 
+import tools.HardCodedParameters;
+
 public class Game {
 	private short level;
 	private short remainingLives;
@@ -64,5 +66,16 @@ public class Game {
 	 */
 	public void setEnnemyKilled(int ennemyKilled) {
 		this.ennemyKilled = ennemyKilled;
+	}
+	
+	public void startNewLevel(short level){
+		if(HardCodedParameters.alienStep < 10) HardCodedParameters.alienStep += 1;
+		if(HardCodedParameters.alienFrontSensor < 350) HardCodedParameters.alienFrontSensor += 10;
+		if(HardCodedParameters.bulletBossAlien < 125) HardCodedParameters.bulletBossAlien += 25;
+		if(HardCodedParameters.bulletAlien < 10) HardCodedParameters.bulletAlien += 1;
+		if(HardCodedParameters.nbAliensSpawn < 24) HardCodedParameters.nbAliensSpawn += 3;
+		HardCodedParameters.bossAlienHealth += 250;
+		HardCodedParameters.alienHealth += 10;
+		this.level = (short)(level + 1) ;
 	}
 }

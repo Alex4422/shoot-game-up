@@ -11,7 +11,6 @@ import tools.HardCodedParameters;
 import specifications.ViewerService;
 import specifications.ReadService;
 import specifications.RequireReadService;
-import specifications.PhantomService;
 
 import javafx.scene.Group;
 import javafx.scene.Parent;
@@ -20,6 +19,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import metier.Alien;
 import metier.Map;
 import javafx.scene.text.Font;
 import javafx.scene.image.ImageView;
@@ -95,17 +95,16 @@ public class Viewer implements ViewerService, RequireReadService{
 		Group panel = new Group();
 		panel.getChildren().addAll(map,levelNumber,score,heroesAvatar);
 
-		ArrayList<PhantomService> phantoms = data.getPhantoms();
-		PhantomService p;
+		ArrayList<Alien> aliens = data.getAliens();
+		Alien alien;
 
-		for (int i=0; i<phantoms.size();i++){
-			p=phantoms.get(i);
+		for (int i=0; i<aliens.size();i++){
+			alien=aliens.get(i);
 			double radius=.5*Math.min(shrink*data.getPhantomWidth(),shrink*data.getPhantomHeight());
-			Circle phantomAvatar = new Circle(radius,Color.rgb(255,156,156));
-			phantomAvatar.setEffect(new Lighting());
-			phantomAvatar.setTranslateX(shrink*p.getPosition().x+shrink*xModifier-radius);
-			phantomAvatar.setTranslateY(shrink*p.getPosition().y+shrink*yModifier-radius);
-			panel.getChildren().add(phantomAvatar);
+			ImageView imageAlien = new ImageView(alien.getImage());
+			imageAlien.setTranslateX(shrink*alien.getPosition().x+shrink*xModifier-radius);
+			imageAlien.setTranslateY(shrink*alien.getPosition().y+shrink*yModifier-radius);
+			panel.getChildren().add(imageAlien);
 		}
 
 		for (int i =0; i<data.getHero().getListShot().size();i++){

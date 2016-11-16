@@ -6,27 +6,27 @@
  * ******************************************************/
 package specifications;
 
-import tools.Position;
 import tools.Sound;
 
 import java.util.ArrayList;
-import java.util.List;
 
+import metier.Alien;
+import metier.Game;
 import metier.Map;
+import metier.Player;
 import metier.Starship;
 
 public interface ReadService {
-	public Position getHeroesPosition();
 	public Starship getHero();
-	public double getHeroesWidth();
-	public double getHeroesHeight();
+	public Game getGame();
+	public Player getPlayer();
 	public double getPhantomWidth();
 	public double getPhantomHeight();
 	public int getStepNumber();
 	public int getScore();
 	public Map getMap();
 	public boolean getShoot();
-	public ArrayList<PhantomService> getPhantoms();
+	public ArrayList<Alien> getAliens();
 	public Sound.SOUND getSoundEffect();
 	public int getLevelNumber();
 }

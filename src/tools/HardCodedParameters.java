@@ -9,13 +9,16 @@ package tools;
 public class HardCodedParameters {
   //---HARD-CODED-PARAMETERS---//
   public static String defaultParamFileName = "in.parameters";
-  public static final int defaultWidth = 800, defaultHeight = 600,
-  						  locationScoreJoueurX = 20, locationScoreJoueurY = 90,
-  						  heroesStartX = 400, heroesStartY = 470, heroesWidth=60, heroesHeight=50, heroesStep = 10,
-  						  locationGameLevelX = 20, locationGameLevelY = 35,
+  public static int defaultWidth = 800, defaultHeight = 600,
+                          heroesStartX = 400, heroesStartY = 450, heroesWidth=60, heroesHeight=50, heroesStep = 10, heroesHealth = 125, bulletHero = 5,
+                          alienWidth = 50, alienHeight = 40, alienStep = 10, alienFrontSensor = 300, alienHealth = 20, bulletAlien = 5,
+                          bossAlienWidth = 100, bossAlienHeight = 80, bossAlienStep = 8, bossAlienHealth = 500, bulletBossAlien = 25,
+                          locationGameLevelX = 20, locationGameLevelY = 35, 
+                          locationScoreJoueurX = 20, locationScoreJoueurY = 90,
                           phantomWidth = 30, phantomHeight = 30, phantomStep = 10;
   public static final int enginePaceMillis = 100,
                           spriteSlowDownRate = 7;
+  public static int nbAliensSpawn = 9;
   public static final double friction = 0.5;
   public static final double resolutionShrinkFactor = 0.95,
                              userBarShrinkFactor = 0.25,
