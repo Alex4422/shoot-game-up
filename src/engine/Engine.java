@@ -85,26 +85,27 @@ public class Engine implements EngineService, RequireDataService{
 
 				if (shoot){
 					data.getHero().getShotService().fire(data.getHero());
-		        	shoot=false;
-		        }
-				
+					shoot=false;
+				}
+
 				ArrayList<Alien> aliens = new ArrayList<Alien>();
 				int score=0;
 
 				data.setSoundEffect(Sound.SOUND.None);
 
 				for (Alien p:data.getAliens()){
-//					PhantomService p = data.getPhantoms().get(i);
+					//					PhantomService p = data.getPhantoms().get(i);
 					if (p.getAction()==Alien.MOVE.LEFT) moveLeft(p);
 					if (p.getAction()==Alien.MOVE.RIGHT) moveRight(p);
 					if (p.getAction()==Alien.MOVE.DOWN) moveDown(p);
+					collisionHerosBulletAlien(p);
 					
 					if (collisionHeroeAlien(p)){
 						data.setSoundEffect(Sound.SOUND.HeroesGotHit);
 						data.getGame().setEnnemyKilled(data.getGame().getEnnemyKilled()+1);
 						score++;
 					} else {
-						if (p.getPosition().y < HardCodedParameters.defaultHeight -120) {
+						if (p.getPosition().y < HardCodedParameters.defaultHeight -120 && p.getLife() > 0) {
 							aliens.add(p);
 						} else {
 							data.getGame().setEnnemyKilled(data.getGame().getEnnemyKilled()+1);
@@ -130,8 +131,8 @@ public class Engine implements EngineService, RequireDataService{
 	public void setHeroesCommand(User.COMMAND c){
 		if (c==User.COMMAND.LEFT) moveLeft=true;
 		if (c==User.COMMAND.RIGHT) moveRight=true;
-//		if (c==User.COMMAND.UP) moveUp=true;
-//		if (c==User.COMMAND.DOWN) moveDown=true;
+		//		if (c==User.COMMAND.UP) moveUp=true;
+		//		if (c==User.COMMAND.DOWN) moveDown=true;
 		if (c==User.COMMAND.SHOOT) shoot=true;
 	}
 
@@ -161,10 +162,10 @@ public class Engine implements EngineService, RequireDataService{
 		if (!isHeroOutsideMapLimit()) {
 			data.getHero().setPosition(new Position(data.getHero().getPosition().x+heroesVX,data.getHero().getPosition().y+heroesVY));
 		}
-//		if (!isOutsideMapLimit(new Position(data.getHero().getPosition().x+heroesVX,data.getHero().getPosition().y+heroesVY))) {
-//			data.getHero().setPosition(new Position(data.getHero().getPosition().x+heroesVX,data.getHero().getPosition().y+heroesVY));
-//		}
-		
+		//		if (!isOutsideMapLimit(new Position(data.getHero().getPosition().x+heroesVX,data.getHero().getPosition().y+heroesVY))) {
+		//			data.getHero().setPosition(new Position(data.getHero().getPosition().x+heroesVX,data.getHero().getPosition().y+heroesVY));
+		//		}
+
 	}
 
 	private void spawnAlien(){
@@ -181,31 +182,34 @@ public class Engine implements EngineService, RequireDataService{
 		data.addAlien(new Position(x,y));
 		spawnedAlien++;
 	}
-	
+
 	private void spawnBoss(){
 		int x=(int)(HardCodedParameters.defaultWidth/2);
 		int y=0;
 		data.addAlien(new Position(x,y));
-		data.getAliens().get(0).setSizeX(HardCodedParameters.bossAlienWidth);
-		data.getAliens().get(0).setSizeY(HardCodedParameters.bossAlienHeight);
+//		data.getAliens().get(0).setSizeX(HardCodedParameters.bossAlienWidth);
+//		data.getAliens().get(0).setSizeY(HardCodedParameters.bossAlienHeight);
+		data.getAliens().get(0).setSizeX((int)data.getAliens().get(0).getImage().getWidth()-45);
+		data.getAliens().get(0).setSizeY((int)data.getAliens().get(0).getImage().getHeight());
+		data.getAliens().get(0).setLife((short) HardCodedParameters.bossAlienHealth);
 		data.getAliens().get(0).setSpeed((short)(HardCodedParameters.bossAlienStep));
 		spawnedAlien++;
 	}
-	
+
 	private void moveLeft(Alien p){
-//		if (!isOutsideMapLimit(new Position(p.getPosition().x-phantomStep,p.getPosition().y))) {
-			p.setPosition(new Position(p.getPosition().x-alienStep,p.getPosition().y));
-//		}
+		//		if (!isOutsideMapLimit(new Position(p.getPosition().x-phantomStep,p.getPosition().y))) {
+		p.setPosition(new Position(p.getPosition().x-alienStep,p.getPosition().y));
+		//		}
 	}
 
 	private void moveRight(Alien p){
-//		if (p.getPosition().x + phantomStep > data.getMap().getWidth()) {
-			p.setPosition(new Position(p.getPosition().x+alienStep,p.getPosition().y));			
-//		}
-//		if (!isOutsideMapLimit(new Position(p.getPosition().x+phantomStep,p.getPosition().y))) {
-//			p.setPosition(new Position(p.getPosition().x+phantomStep,p.getPosition().y));
-//		}
-		
+		//		if (p.getPosition().x + phantomStep > data.getMap().getWidth()) {
+		p.setPosition(new Position(p.getPosition().x+alienStep,p.getPosition().y));			
+		//		}
+		//		if (!isOutsideMapLimit(new Position(p.getPosition().x+phantomStep,p.getPosition().y))) {
+		//			p.setPosition(new Position(p.getPosition().x+phantomStep,p.getPosition().y));
+		//		}
+
 	}
 
 	private void moveDown(Alien p){
@@ -219,10 +223,22 @@ public class Engine implements EngineService, RequireDataService{
 				0.25*(data.getHero().getSizeY()+data.getPhantomHeight())*(data.getHero().getSizeY()+data.getPhantomHeight())
 				);
 	}
-//
-//	private boolean collisionHeroesPhantoms(){
-//		for (PhantomService p:data.getPhantoms()) if (collisionHeroesPhantom(p)) return true; return false;
-//	}
+
+	private void collisionHerosBulletAlien(Alien alien){
+		for(int i = 0 ; i < data.getHero().getListShot().size() ; i++){         
+			if(((alien.getPosition().x+15-data.getHero().getListShot().get(i).x)*(alien.getPosition().x+15-data.getHero().getListShot().get(i).x))+
+				(alien.getPosition().y+10-data.getHero().getListShot().get(i).y)*(alien.getPosition().y+10-data.getHero().getListShot().get(i).y) <
+					0.25*(alien.getSizeY()+10)*(alien.getSizeX()+8)){
+				System.out.println("delete bullet");
+				alien.setLife((short) (alien.getLife()- data.getHero().getShotStrength()));
+				data.getHero().getListShot().remove(i);
+			}
+		}
+	}
+	//
+	//	private boolean collisionHeroesPhantoms(){
+	//		for (PhantomService p:data.getPhantoms()) if (collisionHeroesPhantom(p)) return true; return false;
+	//	}
 
 	private boolean isHeroOutsideMapLimit() {
 		Starship hero = data.getHero();
@@ -238,7 +254,7 @@ public class Engine implements EngineService, RequireDataService{
 			return false;
 		}
 	}
-	
+
 
 	private boolean isBotOutsideMapLimit(Position p) {
 		Starship hero = data.getHero();

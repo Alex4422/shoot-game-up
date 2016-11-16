@@ -72,7 +72,7 @@ public class Game {
 	}
 	
 	public void startNewLevel(short level){
-		if(HardCodedParameters.alienStep < 10) HardCodedParameters.alienStep += 1;
+		if(HardCodedParameters.alienStep < 5) HardCodedParameters.alienStep += 1;
 		if(HardCodedParameters.alienFrontSensor < 350) HardCodedParameters.alienFrontSensor += 10;
 		if(HardCodedParameters.bulletBossAlien < 125) HardCodedParameters.bulletBossAlien += 25;
 		if(HardCodedParameters.bulletAlien < 10) HardCodedParameters.bulletAlien += 1;
