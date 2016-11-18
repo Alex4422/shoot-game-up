@@ -1,8 +1,5 @@
 package algorithm;
 
-import java.util.List;
-
-import javafx.scene.shape.Circle;
 import metier.Starship;
 import specifications.ShotService;
 import tools.Position;
@@ -11,8 +8,8 @@ public class DoubleShot implements ShotService{
 
 	@Override
 	public void fire(Starship starship) {
-		// TODO Auto-generated method stub
-		
+		starship.getListShot().add(new Position((starship.getPosition().x- (starship.getSizeX()/2))+16, starship.getPosition().y));
+		starship.getListShot().add(new Position((starship.getPosition().x+ (starship.getSizeX()/2))-16, starship.getPosition().y));
 	}
 	
 

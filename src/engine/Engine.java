@@ -207,8 +207,6 @@ public class Engine implements EngineService, RequireDataService{
 		int x=(int)(HardCodedParameters.defaultWidth/2);
 		int y=0;
 		data.addAlien(new Position(x,y));
-//		data.getAliens().get(0).setSizeX(HardCodedParameters.bossAlienWidth);
-//		data.getAliens().get(0).setSizeY(HardCodedParameters.bossAlienHeight);
 		data.getAliens().get(0).setSizeX((int)data.getAliens().get(0).getImage().getWidth()-45);
 		data.getAliens().get(0).setSizeY((int)data.getAliens().get(0).getImage().getHeight());
 		data.getAliens().get(0).setLife((short) HardCodedParameters.bossAlienHealth);
@@ -248,7 +246,7 @@ public class Engine implements EngineService, RequireDataService{
 		for(int i = 0 ; i < data.getHero().getListShot().size() ; i++){         
 			if(((alien.getPosition().x+15-data.getHero().getListShot().get(i).x)*(alien.getPosition().x+15-data.getHero().getListShot().get(i).x))+
 				(alien.getPosition().y+10-data.getHero().getListShot().get(i).y)*(alien.getPosition().y+10-data.getHero().getListShot().get(i).y) <
-					0.25*(alien.getSizeY()+10)*(alien.getSizeX()+8)){
+					0.25*(alien.getSizeY()+10)*(alien.getSizeX()+10)){
 				alien.setLife((short) (alien.getLife()- data.getHero().getShotStrength()));
 				data.getHero().getListShot().remove(i);
 			}

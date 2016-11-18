@@ -158,7 +158,7 @@ public class Viewer implements ViewerService, RequireReadService{
 				data.getHero().getListShot().remove(i);
 			}
 			else
-				data.getHero().getListShot().get(i).y= data.getHero().getListShot().get(i).y-5;
+				data.getHero().getListShot().get(i).y= data.getHero().getListShot().get(i).y-data.getHero().getShotSpeedRate();
 		}
 	}
 	

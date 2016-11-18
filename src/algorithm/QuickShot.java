@@ -1,18 +1,16 @@
 package algorithm;
 
-import java.util.List;
-
-import javafx.scene.shape.Circle;
 import metier.Starship;
 import specifications.ShotService;
+import tools.HardCodedParameters;
 import tools.Position;
 
 public class QuickShot implements ShotService {
 
 	@Override
 	public void fire(Starship starship) {
-		// TODO Auto-generated method stub
-		
+		if(HardCodedParameters.bulletSpeedRateHero != 5)HardCodedParameters.bulletSpeedRateHero = 5;
+		starship.getListShot().add(new Position(starship.getPosition().x, starship.getPosition().y));
 	}
 	
 

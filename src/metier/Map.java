@@ -2,7 +2,6 @@ package metier;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import tools.HardCodedParameters;
 
 public class Map {
 
