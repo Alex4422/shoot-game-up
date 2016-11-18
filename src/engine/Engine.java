@@ -230,8 +230,18 @@ public class Engine implements EngineService, RequireDataService{
 
 	}
 
-	private void moveDown(Alien p){
-		p.setPosition(new Position(p.getPosition().x,p.getPosition().y+alienStep));
+	private void moveDown(Alien p){	
+		if(isBossSpawn == true){
+			double newY = p.getPosition().y+alienStep;
+			if(newY<20){
+				p.setPosition(new Position(p.getPosition().x,p.getPosition().y+alienStep));
+			}
+			//p.setPosition(new Position(p.getPosition().x,p.getPosition().y+alienStep));
+			//if (p.getPosition().y>20) p.setPosition(new Position(p.getPosition().x+alienStep,20));
+		}
+		else{
+			p.setPosition(new Position(p.getPosition().x,p.getPosition().y+alienStep));
+		}
 	}
 
 	private boolean collisionHeroeAlien(Alien alien){
