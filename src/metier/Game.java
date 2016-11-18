@@ -4,13 +4,11 @@ import tools.HardCodedParameters;
 
 public class Game {
 	private short level;
-	private short remainingLives;
 	private int currentScore;
 	private int ennemyKilled;
 	
 	public Game(){
 		this.level = 1;
-		this.remainingLives = 3;
 		this.currentScore = 0;
 		this.ennemyKilled = 0;
 	}
@@ -27,20 +25,6 @@ public class Game {
 	 */
 	public void setLevel(short level) {
 		this.level = level;
-	}
-
-	/**
-	 * @return the remainingLives
-	 */
-	public short getRemainingLives() {
-		return remainingLives;
-	}
-
-	/**
-	 * @param remainingLives the remainingLives to set
-	 */
-	public void setRemainingLives(short remainingLives) {
-		this.remainingLives = remainingLives;
 	}
 
 	/**

@@ -5,9 +5,10 @@ public class Player {
 	private int totalKill;
 	private String pseudo;
 	private String timePlayed;
-	
+	private int remainingLives;
+
 	public Player(){
-		
+		this.remainingLives = 3;
 	}
 
 	/**
@@ -64,5 +65,20 @@ public class Player {
 	 */
 	public void setTimePlayed(String timePlayed) {
 		this.timePlayed = timePlayed;
+	}
+
+	
+	/**
+	 * @return the remainingLives
+	 */
+	public int getRemainingLives() {
+		return remainingLives;
+	}
+
+	/**
+	 * @param remainingLives the remainingLives to set
+	 */
+	public void setRemainingLives(int remainingLives) {
+		this.remainingLives = remainingLives;
 	}
 }

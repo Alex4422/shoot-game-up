@@ -31,7 +31,7 @@ public class HealthBonus implements BonusService{
 	
 	@Override
 	public void apply(Starship starship) {
-		// TODO Auto-generated method stub
+		this.getHealthBonus().apply(starship);
 
 	}
 

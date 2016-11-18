@@ -7,8 +7,10 @@ import java.util.Random;
 
 import metier.Starship;
 import specifications.BonusService;
+import specifications.ShotService;
 import tools.HardCodedParameters;
 import tools.Position;
+import java.lang.reflect.*;
 
 public class ShotBonus implements BonusService{
 	//FIXME voir si c'est bien une liste de String qu'on voulait
@@ -24,8 +26,27 @@ public class ShotBonus implements BonusService{
 	
 	@Override
 	public void apply(Starship starship) {
-		// TODO Auto-generated method stub
 
+		if (starship.getShotIndex() < this.bonusList.size() - 1) {
+			starship.setShotIndex((short) (starship.getShotIndex() + 1));
+		}
+		
+		String shot = "algorithm." + this.bonusList.get(starship.getShotIndex());
+		Object shotService;
+		try {
+			shotService = Class.forName(shot).newInstance();
+			starship.setShotService((ShotService) shotService);
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println(starship.getShotService());
 	}
 
 	@Override

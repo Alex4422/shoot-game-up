@@ -133,7 +133,7 @@ public class Viewer implements ViewerService, RequireReadService{
 			if (data.getBonusService() instanceof ShotBonus) {
 				bonusIcon.setFill(Color.RED);
 			}
-			bonusIcon.setTranslateX(data.getBonusService().getPosition().x+radius);
+			bonusIcon.setTranslateX(shrink*(data.getBonusService().getPosition().x+radius));
 			bonusIcon.setTranslateY(shrink*data.getBonusService().getPosition().y);
 			bonusIcon.setEffect(new Lighting());
 			panel.getChildren().add(bonusIcon);

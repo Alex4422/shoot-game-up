@@ -313,12 +313,17 @@ public class Engine implements EngineService, RequireDataService{
 	}
 
 	private void collisionBonusObject(BonusService bonus){
-		if ((data.getHero().getPosition().x-bonus.getPosition().x)*(data.getHero().getPosition().x-bonus.getPosition().x)+
+		if ((data.getHero().getPosition().x-5-bonus.getPosition().x)*(data.getHero().getPosition().x-5-bonus.getPosition().x)+
 				(data.getHero().getPosition().y-bonus.getPosition().y)*(data.getHero().getPosition().y-bonus.getPosition().y) <
 				0.25*(data.getHero().getSizeY()+10)*(data.getHero().getSizeY()+10)) {						
 
 			System.out.println("*************colision hero bonus");
+			
+			data.getBonusService().apply(data.getHero());
+			
+			
 			data.setBonusService(null);
+			
 			
 		} else if (bonus.getPosition().y > HardCodedParameters.defaultHeight - 120) {
 			System.out.println("********colision map bonus");
