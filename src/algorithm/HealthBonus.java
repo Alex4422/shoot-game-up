@@ -12,7 +12,6 @@ import tools.HardCodedParameters;
 import tools.Position;
 
 public class HealthBonus implements BonusService{
-	//FIXME voir si c'est bien une liste de String qu'on voulait
 	List<HealthService> bonusList = new ArrayList<HealthService>();
 	private Position position;
 	

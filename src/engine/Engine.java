@@ -12,11 +12,9 @@ import tools.Position;
 import tools.Sound;
 
 import specifications.EngineService;
-import specifications.HealthService;
 import specifications.BonusService;
 import specifications.DataService;
 import specifications.RequireDataService;
-import specifications.ShotService;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -25,6 +23,7 @@ import algorithm.HealthBonus;
 import algorithm.ShotBonus;
 import algorithm.SimpleShot;
 import metier.Alien;
+import metier.Hero;
 import metier.Starship;
 
 import java.util.Random;
@@ -119,6 +118,7 @@ public class Engine implements EngineService, RequireDataService{
 					if (p.getAction()==Alien.MOVE.RIGHT) moveRight(p);
 					if (p.getAction()==Alien.MOVE.DOWN) moveDown(p);
 					collisionHerosBulletAlien(p);
+					alienSensor(p);
 					
 					if (collisionHeroeAlien(p)){
 						data.setSoundEffect(Sound.SOUND.HeroesGotHit);
@@ -340,6 +340,23 @@ public class Engine implements EngineService, RequireDataService{
 			data.setBonusService(null);
 		}
 	}
-
-
+	
+	private void alienSensor(Alien alien) {
+		Position alienPosition = alien.getPosition();
+		Position heroPosition = data.getHero().getPosition();
+		
+		double xRange = alienPosition.x - heroPosition.x;
+		double yRange = alienPosition.y - heroPosition.y;
+		
+		double testXRange = xRange < 0 ? xRange * (-1) : xRange;
+		double testYRange = yRange < 0 ? yRange * (-1) : yRange;
+		
+		if (testXRange < HardCodedParameters.alienFrontSensor && testYRange < HardCodedParameters.alienFrontSensor) {
+			alien.setFireX((int)xRange * (-1));
+			alien.setFireY((int)yRange * (-1));
+			alien.fire();
+		}
+		
+	}
+	
 }

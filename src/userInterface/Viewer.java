@@ -113,7 +113,19 @@ public class Viewer implements ViewerService, RequireReadService{
 			imageAlien.setTranslateY(shrink*alien.getPosition().y+
 					shrink*yModifier+
 					-heroesScale*.5*alien.getImage().getHeight()
-					);
+					);			
+
+			for (int j =0; j<alien.getListShot().size();j++){
+				double radius=2*Math.min(shrink*4,shrink*4);
+				Circle shoot = new Circle(radius,  Color.BLUE);
+				shoot.setEffect(new Lighting());
+				shoot.setTranslateX(shrink*(alien.getListShot().get(j).x+radius));
+				shoot.setTranslateY(shrink*alien.getListShot().get(j).y);
+				panel.getChildren().add(shoot);
+			}
+			
+			historiqueAlienShoot(alien);
+			
 			panel.getChildren().add(imageAlien);
 		}
 
@@ -159,6 +171,16 @@ public class Viewer implements ViewerService, RequireReadService{
 			}
 			else
 				data.getHero().getListShot().get(i).y= data.getHero().getListShot().get(i).y-data.getHero().getShotSpeedRate();
+		}
+	}
+	private void historiqueAlienShoot(Alien alien) {
+		for (int i =0; i<alien.getListShot().size();i++){
+			if (alien.getListShot().get(i).y<0){
+				alien.getListShot().remove(i);
+			} else {
+				alien.getListShot().get(i).x += alien.getFireX()*0.01;
+				alien.getListShot().get(i).y += alien.getFireY()*0.01;				
+			}
 		}
 	}
 	
