@@ -9,7 +9,7 @@ public class Heal implements HealthService{
 
 	@Override
 	public void apply(Starship starship) {
-		System.out.println("before heal " + HardCodedParameters.heroesHealth);
+		System.out.println("before heal " + starship.getLife());
 		starship.setLife((short) HardCodedParameters.heroesHealth);
 		System.out.println("after heal " + starship.getLife());
 		

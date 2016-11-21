@@ -213,6 +213,7 @@ public class Engine implements EngineService, RequireDataService{
 		data.getAliens().get(0).setSizeY((int)data.getAliens().get(0).getImage().getHeight());
 		data.getAliens().get(0).setLife((short) HardCodedParameters.bossAlienHealth);
 		data.getAliens().get(0).setSpeed((short)(HardCodedParameters.bossAlienStep));
+		data.getAliens().get(0).setShotStrength((short) (HardCodedParameters.bulletAlien + 5));
 		HardCodedParameters.alienFrontSensor = 1000;
 		spawnedAlien++;
 	}
@@ -271,8 +272,9 @@ public class Engine implements EngineService, RequireDataService{
 			if(((hero.getPosition().x+15-alien.getListShot().get(i).getPosition().x)*(hero.getPosition().x+15-alien.getListShot().get(i).getPosition().x))+
 				(hero.getPosition().y+10-alien.getListShot().get(i).getPosition().y)*(hero.getPosition().y+10-alien.getListShot().get(i).getPosition().y) <
 					0.25*(hero.getSizeY()+10)*(hero.getSizeX()+10)){
-				data.getHero().setLife((short) (data.getHero().getLife() - alien.getShotStrength()));
 				alien.getListShot().remove(i);
+				data.getHero().setLife((short) (data.getHero().getLife() - alien.getShotStrength()));
+				System.out.println(data.getHero().getLife());
 			}
 		}
 	}
@@ -316,7 +318,7 @@ public class Engine implements EngineService, RequireDataService{
 		BonusService bonus;
 		List<String> bonusList = Arrays.asList("shot", "health");
 		String sBonus = bonusList.get(new Random().nextInt(bonusList.size()));
-		System.out.println("random sBonus: " + sBonus);
+//		System.out.println("random sBonus: " + sBonus);
 		
 		if (sBonus == "shot") {
 			bonus = new ShotBonus();
@@ -341,16 +343,13 @@ public class Engine implements EngineService, RequireDataService{
 				(data.getHero().getPosition().y-bonus.getPosition().y)*(data.getHero().getPosition().y-bonus.getPosition().y) <
 				0.25*(data.getHero().getSizeY()+10)*(data.getHero().getSizeY()+10)) {						
 
-			System.out.println("*************colision hero bonus");
-			
+//			System.out.println("*************colision hero bonus");			
 			data.getBonusService().apply(data.getHero());
-			
-			
 			data.setBonusService(null);
 			
 			
 		} else if (bonus.getPosition().y > HardCodedParameters.defaultHeight - 120) {
-			System.out.println("********colision map bonus");
+//			System.out.println("********colision map bonus");
 			data.setBonusService(null);
 		}
 	}

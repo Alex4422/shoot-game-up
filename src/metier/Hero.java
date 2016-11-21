@@ -14,6 +14,7 @@ public class Hero extends Starship {
 		this.setSizeY(HardCodedParameters.heroesHeight);
 		this.setShotStrength((short) HardCodedParameters.bulletHero);
 		this.setShotSpeedRate((short)HardCodedParameters.bulletSpeedRateHero);
+		this.setLife((short) HardCodedParameters.heroesHealth);
 	}
 
 	/**
