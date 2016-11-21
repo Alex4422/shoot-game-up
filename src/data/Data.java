@@ -18,7 +18,6 @@ import metier.Hero;
 import metier.Map;
 import metier.Player;
 import metier.Starship;
-
 import java.util.ArrayList;
 
 public class Data implements DataService{

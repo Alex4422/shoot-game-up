@@ -21,10 +21,12 @@ import java.util.TimerTask;
 
 import algorithm.HealthBonus;
 import algorithm.ShotBonus;
+import algorithm.Life;
 import algorithm.SimpleShot;
 import metier.Alien;
 import metier.Hero;
 import metier.Starship;
+import metier.Player; 
 
 import java.util.Random;
 import java.util.ArrayList;
@@ -129,6 +131,11 @@ public class Engine implements EngineService, RequireDataService{
 							aliens.add(p);
 						} else {
 							data.getGame().setEnnemyKilled(data.getGame().getEnnemyKilled()+1);
+							
+							Life lifeHero = new Life(); 
+				            data.getHero().setLife((short)(data.getHero().getLife()-1)); 
+				            System.out.println(data.getHero().getLife()); 
+							
 						}
 					}
 				}

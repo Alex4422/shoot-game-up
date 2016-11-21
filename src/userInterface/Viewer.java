@@ -22,9 +22,11 @@ import javafx.scene.text.Text;
 import metier.Alien;
 import metier.Map;
 import javafx.scene.text.Font;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
+import javafx.scene.control.ProgressBar; 
 import java.util.ArrayList;
+import java.util.List;
 
 import algorithm.ShotBonus;
 
@@ -35,11 +37,16 @@ public class Viewer implements ViewerService, RequireReadService{
 			locationMainGameLevelX=HardCodedParameters.locationGameLevelX, 
 			locationMainGameLevelY=HardCodedParameters.locationGameLevelY,
 			defaultMainWidth=HardCodedParameters.defaultWidth,
-			defaultMainHeight=HardCodedParameters.defaultHeight;
+			defaultMainHeight=HardCodedParameters.defaultHeight,
+			defaultLifeMax=HardCodedParameters.lifeMax;
 	private ReadService data;
-	private ImageView heroesAvatar;
+	private ImageView heroesAvatar, starAvatar1, starAvatar2, starAvatar3, starAvatar4, starAvatar5;
 	private double xShrink,yShrink,shrink,xModifier,yModifier,heroesScale;
-
+	private Image starSprite;
+	private ArrayList<ImageView> starAvatarGroup; 
+	private ProgressBar lifeBar; 
+	
+	
 	public Viewer(){}
 
 	@Override
@@ -56,6 +63,32 @@ public class Viewer implements ViewerService, RequireReadService{
 
 		//Yucky hard-conding
 		heroesAvatar = new ImageView(data.getHero().getImage());
+		
+		//alex 
+        starSprite = new Image("file:src/images/life-icon.png"); 
+     
+	    starAvatar1 = new ImageView(starSprite); 
+	    starAvatar2 = new ImageView(starSprite); 
+	    starAvatar3 = new ImageView(starSprite); 
+	    starAvatar4 = new ImageView(starSprite); 
+	    starAvatar5 = new ImageView(starSprite); 
+	     
+	    //position the remaining stars 
+	    starAvatar1.setTranslateX(10); 
+	    starAvatar1.setTranslateY(400); 
+	     
+	    starAvatar2.setTranslateX(40); 
+	    starAvatar2.setTranslateY(400); 
+	     
+	    starAvatar3.setTranslateX(70); 
+	    starAvatar3.setTranslateY(400); 
+	     
+	    starAvatar4.setTranslateX(100); 
+	    starAvatar4.setTranslateY(400); 
+	     
+	    starAvatar5.setTranslateX(130); 
+	    starAvatar5.setTranslateY(400); 
+	    //alex 
 	}
 
 	@Override
@@ -91,6 +124,17 @@ public class Viewer implements ViewerService, RequireReadService{
 				shrink*yModifier+
 				-heroesScale*.5*data.getHero().getImage().getHeight()
 				);
+		
+		//Barre de progression 
+        lifeBar = new ProgressBar(data.getHero().getLife()/defaultLifeMax); 
+        lifeBar.setTranslateX(shrink*data.getHero().getPosition().x+ 
+            shrink*xModifier+ 
+            -heroesScale*.5*data.getHero().getImage().getWidth()); 
+        lifeBar.setTranslateY(shrink*data.getHero().getPosition().y+ 
+            shrink*yModifier+ 
+            -heroesScale*.5*data.getHero().getImage().getHeight() - 50); 
+        //System.out.println("vie max " + defaultLifeMax); 
+        System.out.println("vie current " + data.getHero().getLife()/defaultLifeMax); 
 
 
 		//heroesAvatarViewportIndex=(heroesAvatarViewportIndex+1)%(heroesAvatarViewports.size()*spriteSlowDownRate);
@@ -150,6 +194,20 @@ public class Viewer implements ViewerService, RequireReadService{
 			bonusIcon.setEffect(new Lighting());
 			panel.getChildren().add(bonusIcon);
 		}
+		
+		List <ImageView> listAvatar= new ArrayList<ImageView>(); 
+	    listAvatar.add(starAvatar1); 
+	    listAvatar.add(starAvatar2); 
+	    listAvatar.add(starAvatar3); 
+	    listAvatar.add(starAvatar4); 
+	    listAvatar.add(starAvatar5); 
+	    //panel.getChildren().addAll(starAvatar1,starAvatar2,starAvatar3,starAvatar4,starAvatar5,lifeBar); 
+	    if(lifeBar.getProgress() ==-0.7 ){ 
+	      listAvatar.remove(starAvatar5); 
+	    } 
+	    panel.getChildren().addAll(listAvatar); 
+	    panel.getChildren().addAll(lifeBar); 
+		
 
 		return panel;
 	}

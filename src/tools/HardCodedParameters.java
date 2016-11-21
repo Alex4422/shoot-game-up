@@ -15,7 +15,8 @@ public class HardCodedParameters {
                           bossAlienWidth = 100, bossAlienHeight = 80, bossAlienStep = 8, bossAlienHealth = 500, bulletBossAlien = 25,
                           locationGameLevelX = 20, locationGameLevelY = 35, 
                           locationScoreJoueurX = 20, locationScoreJoueurY = 90,
-                          phantomWidth = 30, phantomHeight = 30, phantomStep = 10;
+                          phantomWidth = 30, phantomHeight = 30, phantomStep = 10,
+                          lifeMax = 10; 
   public static final int enginePaceMillis = 100,
                           spriteSlowDownRate = 7;
   public static int nbAliensSpawn = 9;
