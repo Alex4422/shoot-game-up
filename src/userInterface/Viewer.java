@@ -26,6 +26,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.ProgressBar; 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import algorithm.ShotBonus;
@@ -67,14 +68,27 @@ public class Viewer implements ViewerService, RequireReadService{
 		//alex 
         starSprite = new Image("file:src/images/life-icon.png"); 
      
-	    starAvatar1 = new ImageView(starSprite); 
+	    /*starAvatar1 = new ImageView(starSprite); 
 	    starAvatar2 = new ImageView(starSprite); 
 	    starAvatar3 = new ImageView(starSprite); 
 	    starAvatar4 = new ImageView(starSprite); 
-	    starAvatar5 = new ImageView(starSprite); 
-	     
+	    starAvatar5 = new ImageView(starSprite); */
+	    
+        final ImageView[] StarAvatars = new ImageView[] {starAvatar1,starAvatar2,starAvatar3,starAvatar4,starAvatar5};
+        
+        final List<ImageView> listStarAvatars= new ArrayList<ImageView>();
+        
+        for (ImageView StarAvatar : StarAvatars) {
+        		listStarAvatars.add(StarAvatar);
+        }
+        
+        for (int i = 0; i < listStarAvatars.size(); i++) {
+            System.out.println(listStarAvatars.get(i));
+       }
+        
+        
 	    //position the remaining stars 
-	    starAvatar1.setTranslateX(10); 
+	    /*starAvatar1.setTranslateX(10); 
 	    starAvatar1.setTranslateY(400); 
 	     
 	    starAvatar2.setTranslateX(40); 
@@ -87,7 +101,7 @@ public class Viewer implements ViewerService, RequireReadService{
 	    starAvatar4.setTranslateY(400); 
 	     
 	    starAvatar5.setTranslateX(130); 
-	    starAvatar5.setTranslateY(400); 
+	    starAvatar5.setTranslateY(400);*/ 
 	    //alex 
 	}
 
@@ -195,17 +209,17 @@ public class Viewer implements ViewerService, RequireReadService{
 			panel.getChildren().add(bonusIcon);
 		}
 		
-		List <ImageView> listAvatar= new ArrayList<ImageView>(); 
-	    listAvatar.add(starAvatar1); 
+		//List <ImageView> listAvatar= new ArrayList<ImageView>(); 
+	    /*listAvatar.add(starAvatar1); 
 	    listAvatar.add(starAvatar2); 
 	    listAvatar.add(starAvatar3); 
 	    listAvatar.add(starAvatar4); 
-	    listAvatar.add(starAvatar5); 
+	    listAvatar.add(starAvatar5);*/ 
 	    //panel.getChildren().addAll(starAvatar1,starAvatar2,starAvatar3,starAvatar4,starAvatar5,lifeBar); 
-	    if(lifeBar.getProgress() ==-0.7 ){ 
+	    /*if(lifeBar.getProgress() ==-1.0 ){ 
 	      listAvatar.remove(starAvatar5); 
 	    } 
-	    panel.getChildren().addAll(listAvatar); 
+	    panel.getChildren().addAll(listAvatar); */
 	    panel.getChildren().addAll(lifeBar); 
 		
 
