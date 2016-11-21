@@ -119,8 +119,8 @@ public class Viewer implements ViewerService, RequireReadService{
 				double radius=2*Math.min(shrink*4,shrink*4);
 				Circle shoot = new Circle(radius,  Color.BLUE);
 				shoot.setEffect(new Lighting());
-				shoot.setTranslateX(shrink*(alien.getListShot().get(j).x+radius));
-				shoot.setTranslateY(shrink*alien.getListShot().get(j).y);
+				shoot.setTranslateX(shrink*(alien.getListShot().get(j).getPosition().x+radius));
+				shoot.setTranslateY(shrink*alien.getListShot().get(j).getPosition().y);
 				panel.getChildren().add(shoot);
 			}
 			
@@ -133,8 +133,8 @@ public class Viewer implements ViewerService, RequireReadService{
 			double radius=2*Math.min(shrink*4,shrink*4);
 			Circle shoot = new Circle(radius,  Color.YELLOW);
 			shoot.setEffect(new Lighting());
-			shoot.setTranslateX(shrink*(data.getHero().getListShot().get(i).x+radius));
-			shoot.setTranslateY(shrink*data.getHero().getListShot().get(i).y);
+			shoot.setTranslateX(shrink*(data.getHero().getListShot().get(i).getPosition().x+radius));
+			shoot.setTranslateY(shrink*data.getHero().getListShot().get(i).getPosition().y);
 			panel.getChildren().add(shoot);
 		}
 		
@@ -166,20 +166,20 @@ public class Viewer implements ViewerService, RequireReadService{
 
 	private void historiqueShoot(){		
 		for (int i =0; i<data.getHero().getListShot().size();i++){
-			if (data.getHero().getListShot().get(i).y<0){
+			if (data.getHero().getListShot().get(i).getPosition().y<0){
 				data.getHero().getListShot().remove(i);
 			}
 			else
-				data.getHero().getListShot().get(i).y= data.getHero().getListShot().get(i).y-data.getHero().getShotSpeedRate();
+				data.getHero().getListShot().get(i).getPosition().y= data.getHero().getListShot().get(i).getPosition().y-data.getHero().getShotSpeedRate();
 		}
 	}
 	private void historiqueAlienShoot(Alien alien) {
 		for (int i =0; i<alien.getListShot().size();i++){
-			if (alien.getListShot().get(i).y<0){
+			if (alien.getListShot().get(i).getPosition().y<0){
 				alien.getListShot().remove(i);
 			} else {
-				alien.getListShot().get(i).x += alien.getFireX()*0.01;
-				alien.getListShot().get(i).y += alien.getFireY()*0.01;				
+				alien.getListShot().get(i).getPosition().x += alien.getListShot().get(i).getFireX()*0.01;
+				alien.getListShot().get(i).getPosition().y += alien.getListShot().get(i).getFireY()*0.01;				
 			}
 		}
 	}

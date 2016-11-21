@@ -23,7 +23,7 @@ public abstract class Starship implements StarshipService {
 	private short shotStrength;
 	private short shotIndex = 0;
 	private Image image;
-	private ArrayList<Position> listShot;
+	private ArrayList<Bullet> listShot;
 	protected BonusService bonusService;
 	protected HealthService healthService;
 	protected ShotService shotService = new SimpleShot();
@@ -211,14 +211,14 @@ public abstract class Starship implements StarshipService {
 	/**
 	 * @return the listShot
 	 */
-	public ArrayList<Position> getListShot() {
+	public ArrayList<Bullet> getListShot() {
 		return listShot;
 	}
 
 	/**
 	 * @param listShot the listShot to set
 	 */
-	public void setListShot(ArrayList<Position> listShot) {
+	public void setListShot(ArrayList<Bullet> listShot) {
 		this.listShot = listShot;
 	}
 

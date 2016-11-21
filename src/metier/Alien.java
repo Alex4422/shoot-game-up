@@ -20,7 +20,7 @@ public class Alien extends Starship{
 		this.setSizeX((int) this.getImage().getWidth()-55);
 		this.setSizeY((int)this.getImage().getHeight()-15);
 		this.setLife((short) HardCodedParameters.alienHealth);
-		this.setListShot(new ArrayList<Position>());
+		this.setListShot(new ArrayList<Bullet>());
 	}
 	
 	public MOVE getAction(){ return direction;};
@@ -30,8 +30,9 @@ public class Alien extends Starship{
 	}
 	
 	public void fire () {
-		System.out.println("alien fire");		
-		this.getListShot().add(new Position(this.getPosition().x, this.getPosition().y));
+		System.out.println("alien fire");
+		Bullet bullet = new Bullet(new Position(this.getPosition().x, this.getPosition().y), this.fireX, this.fireY);
+		this.getListShot().add(bullet);
 	}
 
 	/**

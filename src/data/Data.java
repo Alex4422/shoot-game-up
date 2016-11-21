@@ -13,6 +13,7 @@ import specifications.BonusService;
 import specifications.DataService;
 import javafx.scene.image.Image;
 import metier.Alien;
+import metier.Bullet;
 import metier.Game;
 import metier.Hero;
 import metier.Map;
@@ -54,7 +55,7 @@ public class Data implements DataService{
 		hero = new Hero(player);
 		hero.setPosition(new Position(HardCodedParameters.heroesStartX,HardCodedParameters.heroesStartY));
 		hero.setImage(new Image("file:src/images/spaceship-hero.png"));
-		hero.setListShot(new ArrayList<Position>());
+		hero.setListShot(new ArrayList<Bullet>());
 
 	}
 

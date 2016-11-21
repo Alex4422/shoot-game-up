@@ -211,6 +211,7 @@ public class Engine implements EngineService, RequireDataService{
 		data.getAliens().get(0).setSizeY((int)data.getAliens().get(0).getImage().getHeight());
 		data.getAliens().get(0).setLife((short) HardCodedParameters.bossAlienHealth);
 		data.getAliens().get(0).setSpeed((short)(HardCodedParameters.bossAlienStep));
+		data.getAliens().get(0).setFrontSensor((short)1000);
 		spawnedAlien++;
 	}
 
@@ -254,8 +255,8 @@ public class Engine implements EngineService, RequireDataService{
 	
 	private void collisionHerosBulletAlien(Alien alien){
 		for(int i = 0 ; i < data.getHero().getListShot().size() ; i++){         
-			if(((alien.getPosition().x+15-data.getHero().getListShot().get(i).x)*(alien.getPosition().x+15-data.getHero().getListShot().get(i).x))+
-				(alien.getPosition().y+10-data.getHero().getListShot().get(i).y)*(alien.getPosition().y+10-data.getHero().getListShot().get(i).y) <
+			if(((alien.getPosition().x+15-data.getHero().getListShot().get(i).getPosition().x)*(alien.getPosition().x+15-data.getHero().getListShot().get(i).getPosition().x))+
+				(alien.getPosition().y+10-data.getHero().getListShot().get(i).getPosition().y)*(alien.getPosition().y+10-data.getHero().getListShot().get(i).getPosition().y) <
 					0.25*(alien.getSizeY()+10)*(alien.getSizeX()+10)){
 				alien.setLife((short) (alien.getLife()- data.getHero().getShotStrength()));
 				data.getHero().getListShot().remove(i);
@@ -351,7 +352,7 @@ public class Engine implements EngineService, RequireDataService{
 		double testXRange = xRange < 0 ? xRange * (-1) : xRange;
 		double testYRange = yRange < 0 ? yRange * (-1) : yRange;
 		
-		if (testXRange < HardCodedParameters.alienFrontSensor && testYRange < HardCodedParameters.alienFrontSensor) {
+		if (testXRange < HardCodedParameters.alienFrontSensor && testYRange < HardCodedParameters.alienFrontSensor && data.getStepNumber() % 5 == 0) {
 			alien.setFireX((int)xRange * (-1));
 			alien.setFireY((int)yRange * (-1));
 			alien.fire();
