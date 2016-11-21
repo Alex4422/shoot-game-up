@@ -76,6 +76,7 @@ public class Engine implements EngineService, RequireDataService{
 					data.getHero().setShotIndex((short)0);
 					data.getPlayer().setTotalKill(data.getGame().getEnnemyKilled() + data.getPlayer().getTotalKill());
 					data.getGame().setEnnemyKilled(0);
+					HardCodedParameters.alienFrontSensor = (int) (150 + (150*data.getGame().getLevel() * 0.2));
 					isBossSpawn = false;
 					spawnedAlien = 0;
 				} else if (!isBossSpawn &&
@@ -118,6 +119,7 @@ public class Engine implements EngineService, RequireDataService{
 					if (p.getAction()==Alien.MOVE.RIGHT) moveRight(p);
 					if (p.getAction()==Alien.MOVE.DOWN) moveDown(p);
 					collisionHerosBulletAlien(p);
+					collisionAlienBulletsHero(p);
 					alienSensor(p);
 					
 					if (collisionHeroeAlien(p)){
@@ -211,7 +213,7 @@ public class Engine implements EngineService, RequireDataService{
 		data.getAliens().get(0).setSizeY((int)data.getAliens().get(0).getImage().getHeight());
 		data.getAliens().get(0).setLife((short) HardCodedParameters.bossAlienHealth);
 		data.getAliens().get(0).setSpeed((short)(HardCodedParameters.bossAlienStep));
-		data.getAliens().get(0).setFrontSensor((short)1000);
+		HardCodedParameters.alienFrontSensor = 1000;
 		spawnedAlien++;
 	}
 
@@ -260,6 +262,17 @@ public class Engine implements EngineService, RequireDataService{
 					0.25*(alien.getSizeY()+10)*(alien.getSizeX()+10)){
 				alien.setLife((short) (alien.getLife()- data.getHero().getShotStrength()));
 				data.getHero().getListShot().remove(i);
+			}
+		}
+	}
+	private void collisionAlienBulletsHero(Alien alien) {
+		Starship hero = data.getHero();
+		for(int i = 0 ; i < alien.getListShot().size() ; i++){         
+			if(((hero.getPosition().x+15-alien.getListShot().get(i).getPosition().x)*(hero.getPosition().x+15-alien.getListShot().get(i).getPosition().x))+
+				(hero.getPosition().y+10-alien.getListShot().get(i).getPosition().y)*(hero.getPosition().y+10-alien.getListShot().get(i).getPosition().y) <
+					0.25*(hero.getSizeY()+10)*(hero.getSizeX()+10)){
+				data.getHero().setLife((short) (data.getHero().getLife() - alien.getShotStrength()));
+				alien.getListShot().remove(i);
 			}
 		}
 	}
@@ -352,7 +365,11 @@ public class Engine implements EngineService, RequireDataService{
 		double testXRange = xRange < 0 ? xRange * (-1) : xRange;
 		double testYRange = yRange < 0 ? yRange * (-1) : yRange;
 		
-		if (testXRange < HardCodedParameters.alienFrontSensor && testYRange < HardCodedParameters.alienFrontSensor && data.getStepNumber() % 5 == 0) {
+		if (isBossSpawn && testXRange < 1000 && testYRange < 1000 && data.getStepNumber() % 3 == 0) {
+			alien.setFireX((int)xRange * (-1));
+			alien.setFireY((int)yRange * (-1));
+			alien.fire();
+		} else if (testXRange < HardCodedParameters.alienFrontSensor && testYRange < HardCodedParameters.alienFrontSensor && data.getStepNumber() % 5 == 0) {
 			alien.setFireX((int)xRange * (-1));
 			alien.setFireY((int)yRange * (-1));
 			alien.fire();
