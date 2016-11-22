@@ -148,6 +148,8 @@ public class Viewer implements ViewerService, RequireReadService{
             shrink*yModifier+ 
             -heroesScale*.5*data.getHero().getImage().getHeight() - 50); 
         //System.out.println("vie max " + defaultLifeMax); 
+        
+        System.out.println("data.getHero().getLife() = " + data.getHero().getLife());
         System.out.println("vie current " + data.getHero().getLife()/defaultLifeMax); 
 
 
@@ -216,7 +218,7 @@ public class Viewer implements ViewerService, RequireReadService{
 	    listAvatar.add(starAvatar4); 
 	    listAvatar.add(starAvatar5);*/ 
 	    //panel.getChildren().addAll(starAvatar1,starAvatar2,starAvatar3,starAvatar4,starAvatar5,lifeBar); 
-	    /*if(lifeBar.getProgress() ==-1.0 ){ 
+	    if(lifeBar.getProgress() <= - 20 ){ 
 	      listAvatar.remove(starAvatar5); 
 	    } 
 	    panel.getChildren().addAll(listAvatar); */
