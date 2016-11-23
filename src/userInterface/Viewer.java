@@ -215,26 +215,74 @@ public class Viewer implements ViewerService, RequireReadService{
 		
 		List <ImageView> listAvatar= new ArrayList<ImageView>(); 
 	    
+		
 		listAvatar.add(starAvatar1); 
 	    listAvatar.add(starAvatar2); 
 	    listAvatar.add(starAvatar3); 
 	    listAvatar.add(starAvatar4); 
-	    listAvatar.add(starAvatar5);
-		
-	    //panel.getChildren().addAll(starAvatar1,starAvatar2,starAvatar3,starAvatar4,starAvatar5,lifeBar); 
-	   
-	    //if(lifeBar.getProgress() <= -5 ){ 
-		if(data.getHero().getLife() <= -5){ 
-	    	listAvatar.remove(starAvatar5); 
-		} 
+	    listAvatar.add(starAvatar5);	   
 	    
+		if(data.getHero().getLife() <= -5){ 
+	    		listAvatar.remove(starAvatar5); 
+		} 
+	    System.out.println(listAvatar.size());
+		
+		if(data.getHero().getLife() <= -7){ 
+    			listAvatar.remove(starAvatar4); 
+		} 
+		System.out.println(listAvatar.size());
+		
+		if(data.getHero().getLife() <= -10){ 
+			listAvatar.remove(starAvatar3); 
+		}	 
+		System.out.println(listAvatar.size());
+		
+		
+		if(data.getHero().getLife() <= -12){ 
+			listAvatar.remove(starAvatar2); 
+		}	
+		System.out.println(listAvatar.size());
+		
+		if(data.getHero().getLife() <= -14){ 
+			listAvatar.remove(starAvatar1); 
+		}	 
+		System.out.println(listAvatar.size());
+		
+		
+		//TODO ça plante
+		/*
+		while (listAvatar.size() > 0){
+			
+			
+			if(data.getHero().getLife() <= -5){ 
+	    			listAvatar.remove(starAvatar5); 
+			} 
+			System.out.println("size : " + listAvatar.size());
+			
+			
+			if(data.getHero().getLife() <= -8){ 
+    				listAvatar.remove(starAvatar4); 
+			} 
+		
+			if(data.getHero().getLife() <= -12){ 
+				listAvatar.remove(starAvatar3); 
+			} 
+			
+			if(data.getHero().getLife() <= -18){ 
+				listAvatar.remove(starAvatar2); 
+			}
+			
+			if(data.getHero().getLife() <= -22){ 
+				listAvatar.remove(starAvatar1);
+				JOptionPane.showMessageDialog(null,"You are dead ! You can quit the game.");
+			}
+			
+			
+		} */
+		
 	    panel.getChildren().addAll(listAvatar);
 	    
 	    
-	    
-		
-	    
-	    //panel.getChildren().addAll(listAvatar); */
 	    panel.getChildren().addAll(lifeBar); 
 		
 
