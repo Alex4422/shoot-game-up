@@ -196,7 +196,7 @@ public class Engine implements EngineService, RequireDataService{
 		int y=0;
 		boolean cont=true;
 		while (cont) {
-			x=(int)(gen.nextInt((int)((HardCodedParameters.defaultWidth)-50+data.getMap().getAxeX())));
+			x=(int)(gen.nextInt((int)((data.getMap().getWidth()-100)))) + (int) data.getMap().getAxeX();
 			cont=false;
 			for (Alien p:data.getAliens()){
 				if (p.getPosition().equals(new Position(x,y))) cont=true;
@@ -207,8 +207,9 @@ public class Engine implements EngineService, RequireDataService{
 	}
 
 	private void spawnBoss(){
-		int x=(int)(HardCodedParameters.defaultWidth/2);
+		int x=(int) (((data.getMap().getWidth() + data.getMap().getAxeX())/2)) - (HardCodedParameters.bossAlienWidth/4);
 		int y=0;
+		System.out.println("boss x : " + x);
 		data.addAlien(new Position(x,y));
 		data.getAliens().get(0).setSizeX((int)data.getAliens().get(0).getImage().getWidth()-45);
 		data.getAliens().get(0).setSizeY((int)data.getAliens().get(0).getImage().getHeight());
@@ -294,13 +295,9 @@ public class Engine implements EngineService, RequireDataService{
 
 	private boolean isHeroOutsideMapLimit() {
 		Starship hero = data.getHero();
-		if (hero.getPosition().x + heroesVX < data.getMap().getAxeX() + data.getHero().getImage().getWidth()/2) {
+		if (hero.getPosition().x + heroesVX < data.getMap().getAxeX() + (data.getMap().getWidth() * 0.02)) {
 			return true;
-		} else if (hero.getPosition().x + heroesVX > data.getMap().getWidth()){
-			return true;
-		} else if (hero.getPosition().y + heroesVY > HardCodedParameters.defaultHeight-10) {
-			return true;
-		} else if (hero.getPosition().y + heroesVY  < data.getMap().getAxeY()) {
+		} else if (hero.getPosition().x + heroesVX > data.getMap().getWidth() - data.getHero().getSizeX()){
 			return true;
 		} else {
 			return false;

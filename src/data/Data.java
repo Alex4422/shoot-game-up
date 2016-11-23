@@ -48,6 +48,7 @@ public class Data implements DataService{
 		phantomHeight = HardCodedParameters.phantomHeight;
 		sound = Sound.SOUND.None;
 		map = new Map();
+		map.setWidth(HardCodedParameters.defaultWidth);
 		bonus = null;
 
 		//*********** STARSHIP ****************

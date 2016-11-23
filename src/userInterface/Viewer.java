@@ -85,12 +85,12 @@ public class Viewer implements ViewerService, RequireReadService{
 //		background.setPreserveRatio(true);
 
 		//Yucky hard-conding
-		Rectangle map = new Map(defaultMainWidth/4, yModifier, -2*xModifier+shrink*defaultMainWidth, -.2*shrink*yModifier+shrink*(defaultMainHeight-50)).draw();
-
-		data.getMap().setAxeX(map.getTranslateX());
-		data.getMap().setAxeY(map.getTranslateY());
-		data.getMap().setWidth(map.getWidth());
-		data.getMap().setHeight(map.getHeight());
+		data.getMap().setAxeX(xModifier);
+		data.getMap().setAxeY(yModifier);
+		data.getMap().setWidth(-2*xModifier+shrink*defaultMainWidth);
+		data.getMap().setHeight(-.2*shrink*yModifier+shrink*(defaultMainHeight-50));
+		
+		Rectangle map = data.getMap().draw();
 
 		historiqueShoot();
 
@@ -137,7 +137,7 @@ public class Viewer implements ViewerService, RequireReadService{
 			imageAlien.setTranslateY(shrink*alien.getPosition().y+
 					shrink*yModifier+
 					-heroesScale*.5*alien.getImage().getHeight()
-					);			
+					);
 
 			for (int j =0; j<alien.getListShot().size();j++){
 				double radius=2*Math.min(shrink*4,shrink*4);
