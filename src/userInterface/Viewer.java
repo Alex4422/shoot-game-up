@@ -32,7 +32,8 @@ import java.util.List;
 import algorithm.ShotBonus;
 
 public class Viewer implements ViewerService, RequireReadService{
-	private static final int spriteSlowDownRate=HardCodedParameters.spriteSlowDownRate;
+	private static final int spriteSlowDownRate=HardCodedParameters.spriteSlowDownRate,
+							varMainToFix=HardCodedParameters.varToFix;
 	private static final double locationMainScoreJoueurX=HardCodedParameters.locationScoreJoueurX,
 			locationMainScoreJoueurY=HardCodedParameters.locationScoreJoueurY,
 			locationMainGameLevelX=HardCodedParameters.locationGameLevelX, 
@@ -68,13 +69,13 @@ public class Viewer implements ViewerService, RequireReadService{
 		//alex 
         starSprite = new Image("file:src/images/life-icon.png"); 
      
-	    /*starAvatar1 = new ImageView(starSprite); 
+	    starAvatar1 = new ImageView(starSprite); 
 	    starAvatar2 = new ImageView(starSprite); 
 	    starAvatar3 = new ImageView(starSprite); 
 	    starAvatar4 = new ImageView(starSprite); 
-	    starAvatar5 = new ImageView(starSprite); */
+	    starAvatar5 = new ImageView(starSprite); 
 	    
-        final ImageView[] StarAvatars = new ImageView[] {starAvatar1,starAvatar2,starAvatar3,starAvatar4,starAvatar5};
+        /*final ImageView[] StarAvatars = new ImageView[] {starAvatar1,starAvatar2,starAvatar3,starAvatar4,starAvatar5};
         
         final List<ImageView> listStarAvatars= new ArrayList<ImageView>();
         
@@ -85,10 +86,10 @@ public class Viewer implements ViewerService, RequireReadService{
         for (int i = 0; i < listStarAvatars.size(); i++) {
             System.out.println(listStarAvatars.get(i));
        }
-        
+        */
         
 	    //position the remaining stars 
-	    /*starAvatar1.setTranslateX(10); 
+	    starAvatar1.setTranslateX(10); 
 	    starAvatar1.setTranslateY(400); 
 	     
 	    starAvatar2.setTranslateX(40); 
@@ -101,7 +102,7 @@ public class Viewer implements ViewerService, RequireReadService{
 	    starAvatar4.setTranslateY(400); 
 	     
 	    starAvatar5.setTranslateX(130); 
-	    starAvatar5.setTranslateY(400);*/ 
+	    starAvatar5.setTranslateY(400);
 	    //alex 
 	}
 
@@ -211,17 +212,29 @@ public class Viewer implements ViewerService, RequireReadService{
 			panel.getChildren().add(bonusIcon);
 		}
 		
-		//List <ImageView> listAvatar= new ArrayList<ImageView>(); 
-	    /*listAvatar.add(starAvatar1); 
-	    listAvatar.add(starAvatar2); 
-	    listAvatar.add(starAvatar3); 
-	    listAvatar.add(starAvatar4); 
-	    listAvatar.add(starAvatar5);*/ 
+		
+		
+		List <ImageView> listAvatar= new ArrayList<ImageView>(); 
+	    
 	    //panel.getChildren().addAll(starAvatar1,starAvatar2,starAvatar3,starAvatar4,starAvatar5,lifeBar); 
 	    if(lifeBar.getProgress() <= - 20 ){ 
 	      listAvatar.remove(starAvatar5); 
-	    } 
-	    panel.getChildren().addAll(listAvatar); */
+	    } */
+	    
+	    System.out.println("outside");
+	    //for(int i = varMainToFix ; i <= 0 ; i-- ){
+	    	int i=varMainToFix;
+	    while(i != 0){
+	    		listAvatar.add(starAvatar1); 
+		    listAvatar.add(starAvatar2); 
+		    listAvatar.add(starAvatar3); 
+		    listAvatar.add(starAvatar4); 
+		    listAvatar.add(starAvatar5);
+	    		System.out.println("entered");
+	    		panel.getChildren().addAll(listAvatar);
+	    		i -= i;
+	    }
+	    //panel.getChildren().addAll(listAvatar); 
 	    panel.getChildren().addAll(lifeBar); 
 		
 
