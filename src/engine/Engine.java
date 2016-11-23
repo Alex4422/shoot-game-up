@@ -23,6 +23,7 @@ import algorithm.HealthBonus;
 import algorithm.ShotBonus;
 import algorithm.SimpleShot;
 import metier.Alien;
+import metier.Alien.MOVE;
 import metier.Hero;
 import metier.Starship;
 
@@ -118,10 +119,13 @@ public class Engine implements EngineService, RequireDataService{
 					//					PhantomService p = data.getPhantoms().get(i);
 					if (p.getAction()==Alien.MOVE.LEFT) moveLeft(p);
 					if (p.getAction()==Alien.MOVE.RIGHT) moveRight(p);
-					if (p.getAction()==Alien.MOVE.DOWN) moveDown(p);
+					if (p.getAction()==Alien.MOVE.DOWN && !isBossSpawn) moveDown(p);
 					collisionHerosBulletAlien(p);
 					collisionAlienBulletsHero(p);
 					alienSensor(p);
+					if(isBossSpawn && p.getAction() == Alien.MOVE.DOWN)p.setAction(MOVE.LEFT);
+					if(isBossSpawn && p.getPosition().x-20 < data.getMap().getAxeX() && p.getAction() == Alien.MOVE.LEFT)p.setAction(MOVE.RIGHT);
+					if(isBossSpawn && p.getPosition().x >= data.getMap().getWidth()-10 && p.getAction() == Alien.MOVE.RIGHT)p.setAction(MOVE.LEFT);
 					
 					if (collisionHeroeAlien(p)){
 						data.setSoundEffect(Sound.SOUND.HeroesGotHit);
@@ -280,9 +284,6 @@ public class Engine implements EngineService, RequireDataService{
 				data.getHero().setLife((short) (data.getHero().getLife() - alien.getShotStrength()));
 				if (data.getHero().getLife() <= 0) {
 					data.getPlayer().setRemainingLives(data.getPlayer().getRemainingLives() - 1);
-					if (data.getPlayer().getRemainingLives() <= 0) {
-						
-					}
 				}
 				System.out.println(data.getHero().getLife());
 			}
@@ -295,9 +296,17 @@ public class Engine implements EngineService, RequireDataService{
 
 	private boolean isHeroOutsideMapLimit() {
 		Starship hero = data.getHero();
-		if (hero.getPosition().x + heroesVX < data.getMap().getAxeX() + (data.getMap().getWidth() * 0.02)) {
+		System.out.println("************************************************");
+		System.out.println("Valeur de Step : "  + heroesVX);
+		System.out.println("Hero Position X "+ hero.getPosition().x + " avec step : " + (hero.getPosition().x + heroesVX));
+		System.out.println("Min de la map : "+ data.getMap().getAxeX());
+		System.out.println("Max de la map : " + data.getMap().getWidth());
+		System.out.println("Compare pour la gauche : "+ (hero.getPosition().x + heroesVX - (hero.getSizeX()/2)));
+		System.out.println("Compare pour la droite : "+(hero.getPosition().x + heroesVX+ (hero.getSizeX()/2)));
+		System.out.println("************************************************");
+		if (hero.getPosition().x + heroesVX - (hero.getSizeX()/2) < data.getMap().getAxeX()-20) {
 			return true;
-		} else if (hero.getPosition().x + heroesVX > data.getMap().getWidth() - data.getHero().getSizeX()){
+		} else if (hero.getPosition().x + heroesVX+ (hero.getSizeX()/2) > data.getMap().getWidth()){
 			return true;
 		} else {
 			return false;
