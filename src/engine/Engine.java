@@ -133,9 +133,9 @@ public class Engine implements EngineService, RequireDataService{
 							data.getGame().setEnnemyKilled(data.getGame().getEnnemyKilled()+1);
 							
 							//Alex managing of the hero life
-							Life lifeHero = new Life(); 
-				            data.getHero().setLife((short)(data.getHero().getLife()-1)); 
-				            System.out.println(data.getHero().getLife()); 
+							  Life lifeHero = new Life(); 
+				              data.getHero().setLife((short)(data.getHero().getLife()-2)); 
+				              System.out.println("vie courante du heros " + data.getHero().getLife()); 
 				            //Alex managing of the hero life
 						}
 					}

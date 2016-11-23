@@ -16,8 +16,8 @@ public class HardCodedParameters {
                           locationGameLevelX = 20, locationGameLevelY = 35, 
                           locationScoreJoueurX = 20, locationScoreJoueurY = 90,
                           phantomWidth = 30, phantomHeight = 30, phantomStep = 10,
-                          lifeMax = 5,
-                        	  varToFix = 5;
+                          lifeMax = 10,
+                          varToFix = 5;
   public static final int enginePaceMillis = 100,
                           spriteSlowDownRate = 7;
   public static int nbAliensSpawn = 9;

@@ -213,28 +213,28 @@ public class Viewer implements ViewerService, RequireReadService{
 		}
 		
 		
-		
 		List <ImageView> listAvatar= new ArrayList<ImageView>(); 
 	    
+		listAvatar.add(starAvatar1); 
+	    listAvatar.add(starAvatar2); 
+	    listAvatar.add(starAvatar3); 
+	    listAvatar.add(starAvatar4); 
+	    listAvatar.add(starAvatar5);
+		
 	    //panel.getChildren().addAll(starAvatar1,starAvatar2,starAvatar3,starAvatar4,starAvatar5,lifeBar); 
-	    if(lifeBar.getProgress() <= - 20 ){ 
-	      listAvatar.remove(starAvatar5); 
-	    } */
+	   
+	    //if(lifeBar.getProgress() <= -5 ){ 
+		if(data.getHero().getLife() <= -5){ 
+	    	listAvatar.remove(starAvatar5); 
+		} 
 	    
-	    System.out.println("outside");
-	    //for(int i = varMainToFix ; i <= 0 ; i-- ){
-	    	int i=varMainToFix;
-	    while(i != 0){
-	    		listAvatar.add(starAvatar1); 
-		    listAvatar.add(starAvatar2); 
-		    listAvatar.add(starAvatar3); 
-		    listAvatar.add(starAvatar4); 
-		    listAvatar.add(starAvatar5);
-	    		System.out.println("entered");
-	    		panel.getChildren().addAll(listAvatar);
-	    		i -= i;
-	    }
-	    //panel.getChildren().addAll(listAvatar); 
+	    panel.getChildren().addAll(listAvatar);
+	    
+	    
+	    
+		
+	    
+	    //panel.getChildren().addAll(listAvatar); */
 	    panel.getChildren().addAll(lifeBar); 
 		
 
