@@ -22,6 +22,7 @@ import javafx.scene.text.Text;
 import metier.Alien;
 import metier.Map;
 import javafx.scene.text.Font;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
@@ -39,6 +40,8 @@ public class Viewer implements ViewerService, RequireReadService{
 	private ReadService data;
 	private ImageView heroesAvatar;
 	private double xShrink,yShrink,shrink,xModifier,yModifier,heroesScale;
+	private Image backgroundImage;
+	private ImageView background;
 
 	public Viewer(){}
 
@@ -56,28 +59,50 @@ public class Viewer implements ViewerService, RequireReadService{
 
 		//Yucky hard-conding
 		heroesAvatar = new ImageView(data.getHero().getImage());
+		
+		backgroundImage = new Image("file:src/images/background.jpg");
+		background = new ImageView(backgroundImage);
 	}
 
 	@Override
 	public Parent getPanel(){
+		Group panel = new Group();
+		
+//		if (data.getPlayer().getRemainingLives() <= 0) {
+//			
+//			
+//			return panel;
+//		}
+		
 		shrink=Math.min(xShrink,yShrink);
-		xModifier=.01*shrink*defaultMainHeight;
+		xModifier=.01*shrink*defaultMainWidth;
 		yModifier=.01*shrink*defaultMainHeight;
+		
+
+		background.setFitHeight((defaultMainHeight)*yShrink);
+		background.setFitWidth((defaultMainWidth)*xShrink);
+//		background.autosize();
+//		background.setPreserveRatio(true);
 
 		//Yucky hard-conding
-		Rectangle map = new Map(xModifier, yModifier, -2*xModifier+shrink*defaultMainWidth, -.2*shrink*defaultMainHeight+shrink*defaultMainHeight).draw();
+		Rectangle map = new Map(defaultMainWidth/4, yModifier, -2*xModifier+shrink*defaultMainWidth, -.2*shrink*yModifier+shrink*(defaultMainHeight-50)).draw();
 
-		data.getMap().setAxeX(xModifier);
-		data.getMap().setAxeY(yModifier);
+		data.getMap().setAxeX(map.getTranslateX());
+		data.getMap().setAxeY(map.getTranslateY());
 		data.getMap().setWidth(map.getWidth());
 		data.getMap().setHeight(map.getHeight());
+
 		historiqueShoot();
 
-		Text score = new Text(locationMainScoreJoueurX,locationMainScoreJoueurY,"Score : " + data.getScore()); 
+		Text score = new Text(locationMainScoreJoueurX,locationMainScoreJoueurY,"Score : " + data.getScore());
+		score.setFill(Color.WHITE);
 	    score.setFont(new Font(.05*shrink*defaultMainHeight)); 
 	    
-	    Text levelNumber = new Text(locationMainGameLevelX,locationMainGameLevelY,"Level : " + data.getLevelNumber()); 
+	    Text levelNumber = new Text(locationMainGameLevelX,locationMainGameLevelY,"Level : " + data.getLevelNumber());
+	    levelNumber.setFill(Color.WHITE);
 	    levelNumber.setFont(new Font(.05*shrink*defaultMainHeight));
+	    
+//	    levelNumber.setTranslateX(value);
 
 		//int index=heroesAvatarViewportIndex/spriteSlowDownRate;
 		heroesScale=data.getHero().getSizeY()*shrink/data.getHero().getImage().getHeight();
@@ -94,8 +119,7 @@ public class Viewer implements ViewerService, RequireReadService{
 
 
 		//heroesAvatarViewportIndex=(heroesAvatarViewportIndex+1)%(heroesAvatarViewports.size()*spriteSlowDownRate);
-		Group panel = new Group();
-		panel.getChildren().addAll(map,levelNumber,score,heroesAvatar);
+		panel.getChildren().addAll(background, map,levelNumber,score,heroesAvatar);
 
 		ArrayList<Alien> aliens = data.getAliens();
 		Alien alien;

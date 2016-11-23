@@ -74,6 +74,7 @@ public class Engine implements EngineService, RequireDataService{
 					data.getGame().startNewLevel(data.getGame().getLevel());
 					data.getHero().setShotService(new SimpleShot());
 					data.getHero().setShotIndex((short)0);
+					data.getHero().setShotSpeedRate((short) HardCodedParameters.bulletSpeedRateHero);
 					data.getPlayer().setTotalKill(data.getGame().getEnnemyKilled() + data.getPlayer().getTotalKill());
 					data.getGame().setEnnemyKilled(0);
 					HardCodedParameters.alienFrontSensor = (int) (150 + (150*data.getGame().getLevel() * 0.2));
@@ -127,7 +128,7 @@ public class Engine implements EngineService, RequireDataService{
 						data.getGame().setEnnemyKilled(data.getGame().getEnnemyKilled()+1);
 						score++;
 					} else {
-						if (p.getPosition().y < HardCodedParameters.defaultHeight -120 && p.getLife() > 0) {
+						if (p.getPosition().y < HardCodedParameters.defaultHeight -50 && p.getLife() > 0) {
 							aliens.add(p);
 						} else {
 							data.getGame().setEnnemyKilled(data.getGame().getEnnemyKilled()+1);
@@ -191,11 +192,11 @@ public class Engine implements EngineService, RequireDataService{
 	}
 
 	private void spawnAlien(){
-		int x=(int)(HardCodedParameters.defaultWidth);
+		int x=(int)(HardCodedParameters.defaultWidth-50);
 		int y=0;
 		boolean cont=true;
 		while (cont) {
-			x=(int)(gen.nextInt((int)(HardCodedParameters.defaultWidth)));
+			x=(int)(gen.nextInt((int)((HardCodedParameters.defaultWidth)-50+data.getMap().getAxeX())));
 			cont=false;
 			for (Alien p:data.getAliens()){
 				if (p.getPosition().equals(new Position(x,y))) cont=true;
@@ -256,6 +257,7 @@ public class Engine implements EngineService, RequireDataService{
 				);
 	}
 	
+	//lorsque l'alien se fait toucher par une balle du hero
 	private void collisionHerosBulletAlien(Alien alien){
 		for(int i = 0 ; i < data.getHero().getListShot().size() ; i++){         
 			if(((alien.getPosition().x+15-data.getHero().getListShot().get(i).getPosition().x)*(alien.getPosition().x+15-data.getHero().getListShot().get(i).getPosition().x))+
@@ -266,6 +268,7 @@ public class Engine implements EngineService, RequireDataService{
 			}
 		}
 	}
+	//lorsque le hero se fait toucher par une balle alien
 	private void collisionAlienBulletsHero(Alien alien) {
 		Starship hero = data.getHero();
 		for(int i = 0 ; i < alien.getListShot().size() ; i++){         
@@ -274,6 +277,12 @@ public class Engine implements EngineService, RequireDataService{
 					0.25*(hero.getSizeY()+10)*(hero.getSizeX()+10)){
 				alien.getListShot().remove(i);
 				data.getHero().setLife((short) (data.getHero().getLife() - alien.getShotStrength()));
+				if (data.getHero().getLife() <= 0) {
+					data.getPlayer().setRemainingLives(data.getPlayer().getRemainingLives() - 1);
+					if (data.getPlayer().getRemainingLives() <= 0) {
+						
+					}
+				}
 				System.out.println(data.getHero().getLife());
 			}
 		}
@@ -285,9 +294,9 @@ public class Engine implements EngineService, RequireDataService{
 
 	private boolean isHeroOutsideMapLimit() {
 		Starship hero = data.getHero();
-		if (hero.getPosition().x + heroesVX < data.getMap().getAxeX()+25) {
+		if (hero.getPosition().x + heroesVX < data.getMap().getAxeX() + data.getHero().getImage().getWidth()/2) {
 			return true;
-		} else if (hero.getPosition().x + heroesVX > HardCodedParameters.defaultWidth-25){
+		} else if (hero.getPosition().x + heroesVX > data.getMap().getWidth()){
 			return true;
 		} else if (hero.getPosition().y + heroesVY > HardCodedParameters.defaultHeight-10) {
 			return true;
@@ -348,7 +357,7 @@ public class Engine implements EngineService, RequireDataService{
 			data.setBonusService(null);
 			
 			
-		} else if (bonus.getPosition().y > HardCodedParameters.defaultHeight - 120) {
+		} else if (bonus.getPosition().y > HardCodedParameters.defaultHeight - 50) {
 //			System.out.println("********colision map bonus");
 			data.setBonusService(null);
 		}

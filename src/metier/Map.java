@@ -23,7 +23,7 @@ public class Map {
 	//construct the map
 	public Rectangle draw(){
 		Rectangle rectangle = new Rectangle(this.width, this.height);
-		rectangle.setFill(Color.WHITE);
+		rectangle.setFill(Color.TRANSPARENT);
 		rectangle.setStroke(Color.DIMGRAY);
 		rectangle.setTranslateX(this.axeX);
 	    rectangle.setTranslateY(this.axeY);

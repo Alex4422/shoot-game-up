@@ -21,6 +21,7 @@ import metier.Player;
 import metier.Starship;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Data implements DataService{
 
@@ -134,6 +135,14 @@ public class Data implements DataService{
 
 	@Override
 	public void setBonusService(BonusService bonus) {
+
+		if (bonus != null) {
+			int x=(int) ((int)(new Random().nextInt(((int)(HardCodedParameters.defaultWidth)-50))) + this.map.getAxeX());
+			System.out.println("bonus x :" + x);
+			Position position = new Position(x,0);
+			bonus.setPosition(position);			
+		}
+		
 		this.bonus = bonus;
 		
 	}
