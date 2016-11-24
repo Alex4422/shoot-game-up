@@ -11,11 +11,23 @@ import tools.Sound;
 
 import java.util.ArrayList;
 
+import metier.Alien;
+import metier.Game;
+import metier.Hero;
+import metier.Map;
+import metier.Player;
+
 public interface WriteService {
-  public void setHeroesPosition(Position p);
-  public void setStepNumber(int n);
-  public void addPhantom(Position p);
-  public void setPhantoms(ArrayList<PhantomService> phantoms);
-  public void setSoundEffect(Sound.SOUND s);
-  public void addScore(int score);
+	public void setHero(Hero hero);
+	public void setGame(Game game);
+	public void setPlayer(Player player);
+	public void setStepNumber(int n);
+	public void addAlien(Position p);
+	public void setAliens(ArrayList<Alien> alien);
+	public void setSoundEffect(Sound.SOUND s);
+	public void addScore(int score);
+	public void setShoot(boolean shoot);
+	public void setMap(Map map);
+	public void addLevelNumber(int levelNumber);
+	public void setBonusService(BonusService bonus);
 }
