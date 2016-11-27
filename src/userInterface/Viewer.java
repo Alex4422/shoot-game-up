@@ -110,8 +110,11 @@ public class Viewer implements ViewerService, RequireReadService{
 		Text levelNumber = new Text(locationMainGameLevelX,locationMainGameLevelY,"Level : " + data.getGame().getLevel());
 		levelNumber.setFill(Color.WHITE);
 		levelNumber.setFont(new Font(.05*shrink*defaultMainHeight));
-		levelNumber.setTranslateX(0);
-		levelNumber.setTranslateY(0);
+
+		Text enemyKilled = new Text(locationMainScoreJoueurX,locationMainScoreJoueurY +20,"Enemies : " + data.getGame().getEnnemyKilled());
+		enemyKilled.setFill(Color.WHITE);
+		enemyKilled.setFont(new Font(.05*shrink*defaultMainHeight)); 
+		
 
 		//	    levelNumber.setTranslateX(value);
 
@@ -131,7 +134,7 @@ public class Viewer implements ViewerService, RequireReadService{
 
 		//heroesAvatarViewportIndex=(heroesAvatarViewportIndex+1)%(heroesAvatarViewports.size()*spriteSlowDownRate);
 		if(data.getPlayer().getRemainingLives() > 0){
-			panel.getChildren().addAll(background, map,levelNumber,score,heroesAvatar);
+			panel.getChildren().addAll(background, map, levelNumber, score, enemyKilled, heroesAvatar);
 
 			ArrayList<Alien> aliens = data.getAliens();
 			Alien alien;
