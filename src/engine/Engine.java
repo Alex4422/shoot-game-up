@@ -136,6 +136,11 @@ public class Engine implements EngineService, RequireDataService{
 							aliens.add(p);
 						} else {
 							data.getGame().setEnnemyKilled(data.getGame().getEnnemyKilled()+1);
+							int scoreSum = data.getGame().getCurrentScore() + (10 * data.getGame().getLevel());
+							if (isBossSpawn) {
+								scoreSum = data.getGame().getCurrentScore() + (20 * data.getGame().getLevel());
+							} 
+							data.getGame().setCurrentScore(scoreSum);
 						}
 					}
 				}
@@ -213,7 +218,7 @@ public class Engine implements EngineService, RequireDataService{
 	private void spawnBoss(){
 		int x=(int) (((data.getMap().getWidth() + data.getMap().getAxeX())/2)) - (HardCodedParameters.bossAlienWidth/4);
 		int y=0;
-		System.out.println("boss x : " + x);
+//		System.out.println("boss x : " + x);
 		data.addAlien(new Position(x,y));
 		data.getAliens().get(0).setSizeX((int)data.getAliens().get(0).getImage().getWidth()-45);
 		data.getAliens().get(0).setSizeY((int)data.getAliens().get(0).getImage().getHeight());
@@ -284,8 +289,11 @@ public class Engine implements EngineService, RequireDataService{
 				data.getHero().setLife((short) (data.getHero().getLife() - alien.getShotStrength()));
 				if (data.getHero().getLife() <= 0) {
 					data.getPlayer().setRemainingLives(data.getPlayer().getRemainingLives() - 1);
+					if (data.getPlayer().getRemainingLives() > 0) {
+						data.getHero().setLife((short) HardCodedParameters.heroesHealth);
+					}
 				}
-				System.out.println(data.getHero().getLife());
+//				System.out.println(data.getHero().getLife());
 			}
 		}
 	}
@@ -296,14 +304,14 @@ public class Engine implements EngineService, RequireDataService{
 
 	private boolean isHeroOutsideMapLimit() {
 		Starship hero = data.getHero();
-		System.out.println("************************************************");
-		System.out.println("Valeur de Step : "  + heroesVX);
-		System.out.println("Hero Position X "+ hero.getPosition().x + " avec step : " + (hero.getPosition().x + heroesVX));
-		System.out.println("Min de la map : "+ data.getMap().getAxeX());
-		System.out.println("Max de la map : " + data.getMap().getWidth());
-		System.out.println("Compare pour la gauche : "+ (hero.getPosition().x + heroesVX - (hero.getSizeX()/2)));
-		System.out.println("Compare pour la droite : "+(hero.getPosition().x + heroesVX+ (hero.getSizeX()/2)));
-		System.out.println("************************************************");
+//		System.out.println("************************************************");
+//		System.out.println("Valeur de Step : "  + heroesVX);
+//		System.out.println("Hero Position X "+ hero.getPosition().x + " avec step : " + (hero.getPosition().x + heroesVX));
+//		System.out.println("Min de la map : "+ data.getMap().getAxeX());
+//		System.out.println("Max de la map : " + data.getMap().getWidth());
+//		System.out.println("Compare pour la gauche : "+ (hero.getPosition().x + heroesVX - (hero.getSizeX()/2)));
+//		System.out.println("Compare pour la droite : "+(hero.getPosition().x + heroesVX+ (hero.getSizeX()/2)));
+//		System.out.println("************************************************");
 		if (hero.getPosition().x + heroesVX - (hero.getSizeX()/2) < data.getMap().getAxeX()-20) {
 			return true;
 		} else if (hero.getPosition().x + heroesVX+ (hero.getSizeX()/2) > data.getMap().getWidth()){

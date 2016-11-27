@@ -139,7 +139,7 @@ public class Data implements DataService{
 
 		if (bonus != null) {
 			int x=(int) ((int)(new Random().nextInt(((int)(HardCodedParameters.defaultWidth)-50))) + this.map.getAxeX());
-			System.out.println("bonus x :" + x);
+//			System.out.println("bonus x :" + x);
 			Position position = new Position(x,0);
 			bonus.setPosition(position);			
 		}

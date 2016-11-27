@@ -14,6 +14,7 @@ import specifications.RequireReadService;
 import specifications.ShotService;
 import javafx.scene.Group;
 import javafx.scene.Parent;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.effect.Lighting;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -44,6 +45,9 @@ public class Viewer implements ViewerService, RequireReadService{
 	private ImageView background;
 	private Image gameOver;
 	private ImageView gameOverImageView;
+	private ProgressBar lifeBar;
+	private Image starSprite; 
+	private ImageView starLife;
 
 	public Viewer(){}
 
@@ -65,7 +69,8 @@ public class Viewer implements ViewerService, RequireReadService{
 		backgroundImage = new Image("file:src/images/background.jpg");
 		background = new ImageView(backgroundImage);
 		gameOver = new Image("file:src/images/youLose.jpg");
-		gameOverImageView = new ImageView(gameOver);
+		gameOverImageView = new ImageView(gameOver);		
+		starSprite = new Image("file:src/images/life-icon.png"); 
 	}
 
 	@Override
@@ -98,13 +103,15 @@ public class Viewer implements ViewerService, RequireReadService{
 
 		historiqueShoot();
 
-		Text score = new Text(locationMainScoreJoueurX,locationMainScoreJoueurY,"Score : " + data.getScore());
+		Text score = new Text(locationMainScoreJoueurX,locationMainScoreJoueurY,"Score : " + data.getGame().getCurrentScore());
 		score.setFill(Color.WHITE);
 		score.setFont(new Font(.05*shrink*defaultMainHeight)); 
 
-		Text levelNumber = new Text(locationMainGameLevelX,locationMainGameLevelY,"Level : " + data.getLevelNumber());
+		Text levelNumber = new Text(locationMainGameLevelX,locationMainGameLevelY,"Level : " + data.getGame().getLevel());
 		levelNumber.setFill(Color.WHITE);
 		levelNumber.setFont(new Font(.05*shrink*defaultMainHeight));
+		levelNumber.setTranslateX(0);
+		levelNumber.setTranslateY(0);
 
 		//	    levelNumber.setTranslateX(value);
 
@@ -179,6 +186,35 @@ public class Viewer implements ViewerService, RequireReadService{
 				bonusIcon.setEffect(new Lighting());
 				panel.getChildren().add(bonusIcon);
 			}
+			
+			//vies restantes
+			int lives = data.getPlayer().getRemainingLives();
+			while (lives > 0) {
+				starLife = new ImageView(starSprite);
+				starLife.setFitHeight(starSprite.getWidth()*shrink);
+				starLife.setPreserveRatio(true);
+				starLife.setTranslateY(shrink*650+shrink*xModifier+-heroesScale*.5*starSprite.getWidth());  
+				starLife.setTranslateX(shrink*(lives * 30)+shrink*yModifier+-heroesScale*.5*starSprite.getHeight());
+				panel.getChildren().add(starLife);
+				lives--;
+			}
+
+			//Barre de progression  
+			double progressLife = (data.getHero().getLife()*0.1)/(HardCodedParameters.heroesHealth*0.1);
+//			System.out.println("current life " + data.getHero().getLife());
+//			System.out.println("remaining lives " + data.getPlayer().getRemainingLives());
+//	        System.out.println("progressLife " +progressLife);
+			lifeBar = new ProgressBar(progressLife);
+			lifeBar.autosize();
+	        lifeBar.setTranslateX(shrink*data.getHero().getPosition().x+  
+	            shrink*xModifier+  
+	            -heroesScale*.5*data.getHero().getImage().getWidth() - 25);  
+	        lifeBar.setTranslateY(shrink*data.getHero().getPosition().y+  
+	            shrink*yModifier+  
+	            -heroesScale*.5*data.getHero().getImage().getHeight() + 35);
+	        panel.getChildren().add(lifeBar);
+	        
+	        
 		}else{
 			gameOverImageView.setFitHeight(data.getMap().getHeight());
 			gameOverImageView.setFitWidth(data.getMap().getWidth());
@@ -188,6 +224,8 @@ public class Viewer implements ViewerService, RequireReadService{
 			gameOverImageView.setTranslateY(data.getMap().getAxeY());
 			panel.getChildren().add(gameOverImageView);
 		}
+		
+        
 
 		return panel;
 	}
