@@ -29,7 +29,7 @@ public class Map {
 	public Rectangle draw(){
 		Rectangle rectangle = new Rectangle(this.width, this.height);
 		rectangle.setFill(Color.TRANSPARENT);
-		rectangle.setStroke(Color.DIMGRAY);
+		//rectangle.setStroke(Color.DIMGRAY);
 		rectangle.setTranslateX(this.axeX);
 	    rectangle.setTranslateY(this.axeY);
 	    rectangle.setX(this.axeX);

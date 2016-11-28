@@ -48,7 +48,9 @@ public class Viewer implements ViewerService, RequireReadService{
 	private ProgressBar lifeBar;
 	private Image starSprite; 
 	private ImageView starLife;
-
+	private Image headAlienKill; 
+	private ImageView headAlienKillView;
+	
 	public Viewer(){}
 
 	@Override
@@ -71,6 +73,8 @@ public class Viewer implements ViewerService, RequireReadService{
 		gameOver = new Image("file:src/images/youLose.jpg");
 		gameOverImageView = new ImageView(gameOver);		
 		starSprite = new Image("file:src/images/life-icon.png"); 
+		headAlienKill = new Image("file:src/images/alien.png");
+		headAlienKillView = new ImageView(headAlienKill);
 	}
 
 	@Override
@@ -94,7 +98,8 @@ public class Viewer implements ViewerService, RequireReadService{
 		//		background.setPreserveRatio(true);
 		//Yucky hard-conding
 		Map test = new Map();
-		test.setAxeX(xModifier);
+		test.setAxeX(xModifier/4);
+//		test.setAxeX(xModifier);
 		test.setAxeY(yModifier);
 		test.setWidth(-2*xModifier+shrink*defaultMainWidth);
 		test.setHeight(-.2*shrink*yModifier+shrink*(defaultMainHeight-50));
@@ -103,19 +108,28 @@ public class Viewer implements ViewerService, RequireReadService{
 
 		historiqueShoot();
 
-		Text score = new Text(locationMainScoreJoueurX,locationMainScoreJoueurY,"Score : " + data.getGame().getCurrentScore());
-		score.setFill(Color.WHITE);
-		score.setFont(new Font(.05*shrink*defaultMainHeight)); 
-
-		Text levelNumber = new Text(locationMainGameLevelX,locationMainGameLevelY,"Level : " + data.getGame().getLevel());
+		Text levelNumber = new Text("Level : " + data.getGame().getLevel());
 		levelNumber.setFill(Color.WHITE);
 		levelNumber.setFont(new Font(.05*shrink*defaultMainHeight));
-
-		Text enemyKilled = new Text(locationMainScoreJoueurX,locationMainScoreJoueurY +20,"Enemies : " + data.getGame().getEnnemyKilled());
+		levelNumber.setTranslateX(shrink*locationMainGameLevelX+shrink*xModifier);
+		levelNumber.setTranslateY(shrink*locationMainGameLevelY+shrink*20);
+		
+		Text score = new Text(""+data.getGame().getCurrentScore());
+		score.setFill(Color.WHITE);
+		score.setFont(new Font(.05*shrink*defaultMainHeight)); 
+		score.setTranslateX(shrink*locationMainGameLevelX+shrink*xModifier);
+		score.setTranslateY(shrink*locationMainGameLevelY+shrink*60);
+		
+		headAlienKillView.setFitHeight(headAlienKill.getHeight()*shrink);
+		headAlienKillView.setPreserveRatio(true);
+		headAlienKillView.setTranslateX(shrink*locationMainGameLevelX+shrink*xModifier);
+		headAlienKillView.setTranslateY(shrink*locationMainGameLevelY+shrink*100-(headAlienKill.getHeight()/2)*shrink);
+		
+		Text enemyKilled = new Text("x" + data.getPlayer().getTotalKill());
 		enemyKilled.setFill(Color.WHITE);
 		enemyKilled.setFont(new Font(.05*shrink*defaultMainHeight)); 
-		
-
+		enemyKilled.setTranslateX(shrink*locationMainGameLevelX+shrink*headAlienKill.getWidth());
+		enemyKilled.setTranslateY(shrink*locationMainGameLevelY+shrink*100+10*shrink);
 		//	    levelNumber.setTranslateX(value);
 
 		//int index=heroesAvatarViewportIndex/spriteSlowDownRate;
@@ -134,7 +148,7 @@ public class Viewer implements ViewerService, RequireReadService{
 
 		//heroesAvatarViewportIndex=(heroesAvatarViewportIndex+1)%(heroesAvatarViewports.size()*spriteSlowDownRate);
 		if(data.getPlayer().getRemainingLives() > 0){
-			panel.getChildren().addAll(background, map, levelNumber, score, enemyKilled, heroesAvatar);
+			panel.getChildren().addAll(background, map, levelNumber, score,headAlienKillView, enemyKilled, heroesAvatar);
 
 			ArrayList<Alien> aliens = data.getAliens();
 			Alien alien;

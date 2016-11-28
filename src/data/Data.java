@@ -49,13 +49,14 @@ public class Data implements DataService{
 		sound = Sound.SOUND.None;
 		map = new Map();
 		map.setWidth(HardCodedParameters.defaultWidth);
+		map.setAxeX(HardCodedParameters.defaultWidth/3);
 		bonus = null;
 
 		//*********** STARSHIP ****************
 		player = new Player();
 		game = new Game();
 		hero = new Hero(player);
-		hero.setPosition(new Position(HardCodedParameters.heroesStartX,HardCodedParameters.heroesStartY));
+		hero.setPosition(new Position(HardCodedParameters.heroesStartX+map.getAxeX(),HardCodedParameters.heroesStartY));
 		hero.setImage(new Image("file:src/images/spaceship-hero.png"));
 		hero.setListShot(new ArrayList<Bullet>());
 
