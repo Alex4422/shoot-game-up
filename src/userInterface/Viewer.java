@@ -9,6 +9,7 @@ package userInterface;
 import tools.HardCodedParameters;
 
 import specifications.ViewerService;
+import sun.security.x509.IssuingDistributionPointExtension;
 import specifications.ReadService;
 import specifications.RequireReadService;
 import specifications.ShotService;
@@ -268,7 +269,7 @@ public class Viewer implements ViewerService, RequireReadService{
 	}
 	private void historiqueAlienShoot(Alien alien) {
 		for (int i =0; i<alien.getListShot().size();i++){
-			if (alien.getListShot().get(i).getPosition().y<0){
+			if (alien.getListShot().get(i).getPosition().y > data.getMap().getHeight()){
 				alien.getListShot().remove(i);
 			} else {
 				alien.getListShot().get(i).getPosition().x += alien.getListShot().get(i).getFireX()*0.01;
