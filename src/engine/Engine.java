@@ -77,7 +77,7 @@ public class Engine implements EngineService, RequireDataService{
 					data.getHero().setShotIndex((short)0);
 					data.getHero().setShotSpeedRate((short) HardCodedParameters.bulletSpeedRateHero);
 					data.getPlayer().setTotalKill(data.getGame().getEnnemyKilled() + data.getPlayer().getTotalKill());
-//					data.getGame().setEnnemyKilled(0);
+					data.getGame().setEnnemyKilled(0);
 					HardCodedParameters.alienFrontSensor = (int) (150 + (150*data.getGame().getLevel() * 0.2));
 					isBossSpawn = false;
 					spawnedAlien = 0;
