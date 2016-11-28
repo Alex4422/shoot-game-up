@@ -124,11 +124,18 @@ public class Engine implements EngineService, RequireDataService{
 					alienSensor(p);
 					if(isBossSpawn && p.getAction() == Alien.MOVE.DOWN)p.setAction(MOVE.LEFT);
 					if(isBossSpawn && p.getPosition().x-20 < data.getMap().getAxeX() && p.getAction() == Alien.MOVE.LEFT)p.setAction(MOVE.RIGHT);
-					if(isBossSpawn && p.getPosition().x >= data.getMap().getWidth()-100 && p.getAction() == Alien.MOVE.RIGHT)p.setAction(MOVE.LEFT);
+					if(isBossSpawn && p.getPosition().x >= data.getMap().getWidth()+data.getMap().getAxeX()-(p.getSizeX()/2) && p.getAction() == Alien.MOVE.RIGHT)p.setAction(MOVE.LEFT);
 					
 					if (collisionHeroeAlien(p)){
 						data.setSoundEffect(Sound.SOUND.HeroesGotHit);
 						data.getGame().setEnnemyKilled(data.getGame().getEnnemyKilled()+1);
+						data.getHero().setLife((short) (data.getHero().getLife() - (HardCodedParameters.bulletAlien+10)));
+						if (data.getHero().getLife() <= 0) {
+							data.getPlayer().setRemainingLives(data.getPlayer().getRemainingLives() - 1);
+							if (data.getPlayer().getRemainingLives() > 0) {
+								data.getHero().setLife((short) HardCodedParameters.heroesHealth);
+							}
+						}
 						score++;
 					} else {
 						if (p.getPosition().y < HardCodedParameters.defaultHeight -50 && p.getLife() > 0) {
@@ -136,6 +143,12 @@ public class Engine implements EngineService, RequireDataService{
 						} else {
 							if(p.getPosition().y > HardCodedParameters.defaultHeight -100){
 								data.getHero().setLife((short) (data.getHero().getLife() - (HardCodedParameters.bulletAlien+10)));
+								if (data.getHero().getLife() <= 0) {
+									data.getPlayer().setRemainingLives(data.getPlayer().getRemainingLives() - 1);
+									if (data.getPlayer().getRemainingLives() > 0) {
+										data.getHero().setLife((short) HardCodedParameters.heroesHealth);
+									}
+								}
 							}
 							data.getGame().setEnnemyKilled(data.getGame().getEnnemyKilled()+1);
 							int scoreSum = data.getGame().getCurrentScore() + (10 * data.getGame().getLevel());
